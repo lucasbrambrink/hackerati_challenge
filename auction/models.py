@@ -6,7 +6,8 @@ from django.conf import settings
 from StringIO import StringIO
 from django.core.files.uploadedfile import InMemoryUploadedFile
 import requests
-from os.path import join
+import os
+
 
 class InventoryItem(models.Model):
     MAX_IMAGE_SIZE = 200
@@ -45,6 +46,12 @@ class InventoryItem(models.Model):
 
         return image_stream
 
+    def remove_same_name(self, name):
+        for file in os.listdir(settings.MEDIA_ROOT):
+            if file == name:
+                path = os.path.join(settings.MEDIA_ROOT, file)
+                os.remove(path)
+
     def upload_image_from_url(self, url):
         """
         :param url: ``str``
@@ -55,11 +62,11 @@ class InventoryItem(models.Model):
         file_name = fh.pythonify("{name}_{id}.jpg".format(
             name=self.name, price=self.reserved_price, id=self.pk
         ))
-        full_path = join(settings.PROJECT_DIR, 'auction/static/images/', file_name)
-        django_file = InMemoryUploadedFile(image_stream, None, full_path, 'image/jpeg',
+        self.remove_same_name(name=file_name)
+        django_file = InMemoryUploadedFile(image_stream, None, file_name, 'image/jpeg',
                                   image_stream.len, None)
         # save
-        self.image = django_file
+        self.image.save(file_name, django_file, save=True)
         self.save()
 
 
