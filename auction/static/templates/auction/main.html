@@ -11,7 +11,7 @@
         <h1>Hackerati Auction</h1>
     </div>
     {% for item in items %}
-        <img src="{{ MEDIA_URL }}{{ item.image }}">
+        <img src="{{ item.image.url }}">
     {% endfor %}
 
 </div>

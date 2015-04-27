@@ -54,19 +54,19 @@ USE_TZ = True
 
 ###---< Static files >---###
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(PROJECT_DIR, 'base/root')
+STATIC_ROOT = os.path.join(PROJECT_DIR, 'base', 'root')
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(PROJECT_DIR, 'base/media')
+MEDIA_ROOT = os.path.join(PROJECT_DIR, 'base', 'static', 'media')
 
 STATICFILES_DIRS = (
-    ('base', os.path.join(PROJECT_DIR, 'base/static/bower_components')),
-    ('auction', os.path.join(PROJECT_DIR, 'auction/static'))
+    ('base', os.path.join(PROJECT_DIR, 'base', 'static', 'bower_components')),
+    ('auction', os.path.join(PROJECT_DIR, 'auction', 'static'))
 )
 
 TEMPLATE_DIRS = (
-    os.path.join(PROJECT_DIR, 'base/static/templates'),
-    os.path.join(PROJECT_DIR, 'auction/static/templates'),
+    os.path.join(PROJECT_DIR, 'base', 'static', 'templates'),
+    os.path.join(PROJECT_DIR, 'auction', 'static', 'templates'),
 )
 
 
