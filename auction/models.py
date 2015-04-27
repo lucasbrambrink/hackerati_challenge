@@ -10,7 +10,7 @@ import os
 
 
 class InventoryItem(models.Model):
-    MAX_IMAGE_SIZE = 200
+    MAX_IMAGE_SIZE = 500
 
     image = models.ImageField(null=True)
     thumbnail = models.ImageField(null=True)
@@ -38,11 +38,11 @@ class InventoryItem(models.Model):
         resize_factor = float(limit) / float(self.MAX_IMAGE_SIZE)
         compressed_size = (int(round(original_size[0] / resize_factor)),
                            int(round(original_size[1] / resize_factor)))
-        image.resize(compressed_size, Image.ANTIALIAS)
+        resized_image = image.resize(compressed_size, Image.ANTIALIAS)
 
         # upload to stream
         image_stream = StringIO()
-        image.save(image_stream, format="JPEG")
+        resized_image.save(image_stream, format="JPEG")
 
         return image_stream
 
