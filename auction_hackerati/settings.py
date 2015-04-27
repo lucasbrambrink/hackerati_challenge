@@ -57,7 +57,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(PROJECT_DIR, 'base/root')
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = PROJECT_DIR + 'base/media/'
+MEDIA_ROOT = os.path.join(PROJECT_DIR, 'base/media')
 
 STATICFILES_DIRS = (
     ('base', os.path.join(PROJECT_DIR, 'base/static/bower_components')),
