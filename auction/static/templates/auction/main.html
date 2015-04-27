@@ -2,8 +2,7 @@
 {% load staticfiles %}
 
 {% block stylesheets %}
-        <link rel="stylesheet" type="text/css" href="{% static 'auction/css/home_transitions.css' %}" />
-        <link rel="stylesheet" type="text/css" href="{% static 'auction/css/home.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'auction/css/main.css' %}" />
 {% endblock %}
 
 {% block body %}
@@ -11,6 +10,9 @@
     <div class="header">
         <h1>Hackerati Auction</h1>
     </div>
+    {% for item in items %}
+        {{ item.image }}
+    {% endfor %}
 
 </div>
 {% endblock %}

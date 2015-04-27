@@ -55,7 +55,9 @@ USE_TZ = True
 ###---< Static files >---###
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(PROJECT_DIR, 'base/root')
-MEDIA_ROOT = BASE_DIR + '/media/'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = PROJECT_DIR + 'base/media/'
 
 STATICFILES_DIRS = (
     ('base', os.path.join(PROJECT_DIR, 'base/static/bower_components')),
