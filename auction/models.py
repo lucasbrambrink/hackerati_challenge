@@ -46,11 +46,17 @@ class InventoryItem(models.Model):
 
         return image_stream
 
-    def remove_same_name(self, name):
+    @staticmethod
+    def remove_same_name(name):
+        """
+        :param name: ``str`` of filename
+        :return: None, removes existing file from directory
+        """
         for file in os.listdir(settings.MEDIA_ROOT):
             if file == name:
                 path = os.path.join(settings.MEDIA_ROOT, file)
                 os.remove(path)
+
 
     def upload_image_from_url(self, url):
         """
@@ -68,6 +74,7 @@ class InventoryItem(models.Model):
         # save
         self.image.save(file_name, django_file, save=True)
         self.save()
+
 
 
 class Purchase(models.Model):
