@@ -6,6 +6,7 @@ from django.conf import settings
 from StringIO import StringIO
 from django.core.files.uploadedfile import InMemoryUploadedFile
 import requests
+import datetime
 import os
 
 
@@ -74,6 +75,54 @@ class InventoryItem(models.Model):
         # save
         self.image.save(file_name, django_file, save=True)
         self.save()
+
+
+class Auction(models.Model):
+
+    bid_log = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    hours_duration = models.IntegerField()
+
+    # Item
+    item = models.ForeignKey('InventoryItem', related_name='item')
+    starting_price = models.DecimalField(max_digits=9, decimal_places=2)
+    current_price = models.DecimalField(max_digits=9, decimal_places=2, null=True)
+    end_price = models.DecimalField(max_digits=9, decimal_places=2, null=True)
+    sold_item = models.BooleanField(default=False)
+
+    @property
+    def deemed_successful(self):
+        if self.is_active:
+            return False
+
+        return self.end_price >= self.item.reserved_price
+
+    @property
+    def ending_datetime(self):
+        return self.created_at + datetime.timedelta(hours=self.hours_duration)
+
+    @property
+    def is_active(self):
+        return self.ending_datetime < datetime.datetime.now()
+
+    ###---< Internal Methods >---###
+    def increase_current_bidding_price(self, value=None):
+        if value <= self.current_price:
+            return False
+
+        self.current_price = value
+        self.save()
+        return True
+
+    def request_time(self):
+        """ If request time was within ending moments of the auction,
+        One would want to extend accepting bids (from the auctioneer's
+        perspective, as bids can only increase
+        :return:
+        """
+        pass
+
+    
 
 
 
