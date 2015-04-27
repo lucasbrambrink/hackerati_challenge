@@ -75,13 +75,13 @@ TEMPLATE_DIRS = (
 ###---< Import Local Settings >---###
 if DEBUG:
     try:
-        from local_settings import *
+        from auction_hackerati.local_settings import *
     except ImportError:
         raise 'Unable to import local settings file'
 
 ###---< Production Settings >---###
 else:
     try:
-        from production_settings import *
+        from auction_hackerati.production_settings import *
     except ImportError:
         raise 'Unable to load production settings'

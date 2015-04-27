@@ -4,7 +4,7 @@ from base.utils import FormatHelper as fh
 from base.models import HackeratiUser
 from PIL import Image
 from django.conf import settings
-from StringIO import StringIO
+from io import StringIO
 from django.core.files.uploadedfile import InMemoryUploadedFile
 import requests
 import datetime
