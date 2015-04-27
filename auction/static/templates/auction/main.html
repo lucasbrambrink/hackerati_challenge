@@ -1,0 +1,20 @@
+{% extends 'base/base.html' %}
+{% load staticfiles %}
+
+{% block stylesheets %}
+        <link rel="stylesheet" type="text/css" href="{% static 'auction/css/home_transitions.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'auction/css/home.css' %}" />
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="header">
+        <h1>Hackerati Auction</h1>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript" src="{% static 'auction/js/auction.js' %}"></script>
+{% endblock %}
