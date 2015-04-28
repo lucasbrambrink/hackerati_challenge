@@ -34,7 +34,7 @@ class AutoPopulateThroughCraigslist(object):
                 # if any of the essential values are none, simply skip it
                 continue
 
-            if InventoryItem.objects.count(name__icontains=inventory[1]) > 0:
+            if InventoryItem.objects.filter(name__icontains=inventory[1]).count() > 0:
                 # if an item already exists with a similar enough name, don't upload
                 # to avoid duplication
                 continue
