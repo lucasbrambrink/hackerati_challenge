@@ -13,20 +13,31 @@
 
     <div class="auction-focus col-md-6">
         {% for auction in auctions %}
-            <div class="auction" style='background-image: url({{ item.image.url }})'>
-                <h3>{{ auction.item.name }}</h3>
-                <table class="table">
-                    <tbody>
-                        <tr>
-                            <td>Asking Price</td>
-                            <td>${{ auction.item.reserved_price }}</td>
-                        </tr>
-                        <tr>
-                            <td>Current Bid</td>
-                            <td>${{ auction.current_highest_bid }}</td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div class="auction-container">
+                <div class="auction" style='background-image: url({{ auction.item.image.url }})'></div>
+                <div class="auction-info">
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <th colspan="2" style="text-align: center;">
+                                    <h3>{{ auction.item.name }}</h3>
+                                </th>
+                            </tr>
+                            <tr>
+                                <td>Asking Price</td>
+                                <td>${{ auction.item.reserved_price }}</td>
+                            </tr>
+                            <tr>
+                                <td>Current Highest Bid</td>
+                                <td>${{ auction.current_highest_bid }}</td>
+                            </tr>
+                            <tr>
+                                <td>Place New Bid</td>
+                                <td><div class="btn btn-success">Bid</div></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         {% endfor %}
     </div>
