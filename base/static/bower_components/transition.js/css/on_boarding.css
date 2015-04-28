@@ -121,7 +121,29 @@ body {
 }
 
 .pt-page-5 {
+    /*background: rgb(255, 191, 124);*/
+
+    /*background: rgb(97, 185, 255);*/
     background: rgb(249, 228, 182);
+}
+.pt-page-5 .page-content {
+  margin: auto;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+}
+.pt-page-5 .page-content table {
+    margin-top: 2em;
+}
+.pt-page-5 .page-content table td {
+    border: none;
+}
+.pt-page-5 .page-content table tr td:nth-child(1) {
+    text-align: right;
+}
+
+.pt-page-5 .page-content .btn {
+    margin-top: 2em;
+    width: 40%;
 }
 
 .pt-page-6 {

@@ -484,9 +484,10 @@ var PageTransitions = (function () {
                 }
 
                 if (isLastPage){
-                    $('.pt-trigger-container').animate({opacity: 0, 'visibility': 'hidden'}, 800)
-                               //.css('visibility', 'hidden')
-                    //})
+                    $('.pt-trigger-container').animate({opacity: 0, 'visibility': 'hidden'}, 800);
+
+                    digestForm();
+
                 } else {
                     var $this = $('.pt-trigger-container');
                     if ($this.css('hidden')) {
@@ -510,6 +511,50 @@ var PageTransitions = (function () {
         $('.pt-trigger').last().css('visibility', 'hidden')
     }
 
+    function digestForm() {
+        var attributes = ['name', 'username', 'password'];
+
+        var data = {};
+        var index = 0;
+        $('input').each(function(){
+            var value = $(this).val();
+            data[attributes[index]] = value;
+            index++
+        });
+
+        $.ajax({
+            type: 'POST',
+            url: '/on-boarding/create/new/user/',
+            data: {
+                csrfmiddlewaretoken: $.cookie('csrftoken'),
+                data: JSON.stringify(data),
+            },
+            success: function (data) {
+                var userData = data['user_data'];
+
+                $('#target-name').html(userData['name']);
+                $('#target-username').html(userData['username']);
+                //for(var i = 0; i < userData.length; )
+                //
+                //$('#summary-table').html(data['user']);
+                //$('#ajax-panel').empty();
+                //$(data).find('item').each(function (i) {
+                //    $('#ajax-panel').append('<h4>' + $(this).find('title').text() + '</h4><p>' + $(this).find('link').text() + '</p>');
+                //});
+            },
+            error: function (xhr, errmsg, err) {
+                alert("error");
+            }
+        });
+
+
+
+
+    }
+
+
+
+
     return {
         init : init,
     };
@@ -519,5 +564,13 @@ var PageTransitions = (function () {
 $(document).ready(function() {
     // initializing page transition.
     PageTransitions.init();
+
+
+
+
+
+
+
+
 
 });

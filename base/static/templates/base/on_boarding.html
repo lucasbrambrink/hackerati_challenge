@@ -23,20 +23,19 @@
     <div class="pt-page pt-page-1">
         <div class='page-content'>
             <label class="question">What is your name?</label>
-            <input type="text" class='form-control' placeholder="Full Name" name="name">
+            <input type="text" class='form-control' id='name-form' placeholder="Full Name" name="name">
         </div>
     </div>
     <div class="pt-page pt-page-2">
         <div class='page-content'>
             <label class="question">Select a username!</label>
-            <input type="text" class='form-control' placeholder="Username" name="name">
+            <input type="text" class='form-control' placeholder="Username" name="username">
         </div>
     </div>
     <div class="pt-page pt-page-3">
         <div class='page-content'>
             <label class="question">Choose a password!</label>
-            <input type="text" class='form-control' placeholder="Password" name="name">
-            <input type="text" class='form-control' placeholder="Confirm" name="name">
+            <input type="password" class='form-control' placeholder="Password" name=password">
         </div>
     </div>
     <div class="pt-page pt-page-4">
@@ -47,8 +46,26 @@
     </div>
     <div class="pt-page pt-page-5">
         <div class='page-content'>
-            <label class="question">Summary</label>
-            <div class="btn btn-success">Start!</div>
+            <label class="question">Just to Summarize...</label>
+            <div id="summary-table">
+                <table class='table'>
+                    <tbody>
+                        <tr>
+                            <td>Name :</td>
+                            <td id="target-name">]</td>
+                        </tr>
+                        <tr>
+                            <td>Username :</td>
+                            <td id="target-username">{username}</td>
+                        </tr>
+                        <tr>
+                            <td>Balance :</td>
+                            <td>$1000.00</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="btn btn-default">Let's Start!</div>
         </div>
     </div>
 

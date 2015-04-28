@@ -22,6 +22,7 @@
     "jquery": "~2.1.3",
     "bootstrap": "~3.3.4",
     "underscore": "~1.8.3",
-    "transition.js": "~1.0.0"
+    "transition.js": "~1.0.0",
+    "jquery-cookie": "~1.4.1"
   }
 }
