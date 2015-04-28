@@ -49,9 +49,7 @@ class InventoryItem(models.Model):
         # fetch image from url
         image = self.fetch_PIL_object_from_url(url)
         # clean and validate size
-        valid, cleaned_image = self.clean_image(image)
-        if not valid:
-            return False
+        cleaned_image = self.clean_image(image)
 
         # if valid, upload to stream
         image_stream = BytesIO()
@@ -77,13 +75,10 @@ class InventoryItem(models.Model):
         """
         original_size = image.size
         limit = max(original_size)
-        if limit < int(self.MAX_IMAGE_SIZE):
-            return False, None
-
         resize_factor = float(limit) / float(self.MAX_IMAGE_SIZE)
         compressed_size = (int(round(original_size[0] / resize_factor)),
                            int(round(original_size[1] / resize_factor)))
-        return True, image.resize(compressed_size, Image.ANTIALIAS)
+        return image.resize(compressed_size, Image.ANTIALIAS)
 
 
     def fetch_PIL_object_from_url(self, url):

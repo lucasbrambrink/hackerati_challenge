@@ -128,7 +128,14 @@ class AutoPopulateThroughCraigslist(object):
 
         image_link = None
         for image in soup.findAll('img'):
-            image_link = image.get('src')
+            image_link_on_page = image.get('src')
+            image_size = image_link_on_page.strip(".jpg")[-7:]
+            try:
+                sizes = map(int, image_size.split('x'))
+                if min(sizes) > 300:
+                    image_link = image_link_on_page
+            except ValueError:
+                pass
 
         name, price = None, None
         for title in soup.findAll('h2'):
