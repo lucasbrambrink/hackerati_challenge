@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 
 class HackeratiUser(User):
     name = models.CharField(max_length=50)
-    money_in_bank = models.DecimalField(decimal_places=2, max_digits=9, default=10000.00)
+    balance = models.DecimalField(decimal_places=2, max_digits=9, default=10000.00)
     is_seller = models.BooleanField(default=False)
     # everyone is a buyer
 

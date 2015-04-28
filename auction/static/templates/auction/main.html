@@ -10,9 +10,28 @@
     <div class="header">
         <h1>Hackerati Auction</h1>
     </div>
-    {% for item in items %}
-        <img src="{{ item.image.url }}">
-    {% endfor %}
+
+    <div class="auction-focus">
+        {% for item in items %}
+            <img src="{{ item.image.url }}">
+        {% endfor %}
+    </div>
+
+    <div class="ongoing-auctions">
+        <ul>
+            <li>Auction 1</li>
+            <li>Auction 1</li>
+            <li>Auction 1</li>
+            <li>Auction 1</li>
+        </ul>
+    </div>
+
+    <div class="control-panel">`
+        <h4>{{ user.name }}</h4>
+        <h4>Balance : {{ user.balance }}</h4>
+        <div class="actions btn btn-default">Post New Auction</div>
+        <div class="actions btn btn-default">View Inventory</div>
+    </div>
 
 </div>
 {% endblock %}
