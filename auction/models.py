@@ -12,12 +12,25 @@ import os
 
 
 class InventoryItem(models.Model):
+    FURNITURE = 'furniture'
+    ELECTRONICS = 'electronics'
+    JEWLERY = 'jewlery'
+    INSTRUMENTS = 'music_instruments'
+    TICKETS = 'tickets'
+    CATEGORY_CHOICES = (
+        (FURNITURE, 'Furniture'),
+        (ELECTRONICS, 'Electronics'),
+        (JEWLERY, 'Jewlery'),
+        (INSTRUMENTS, 'Instruments'),
+        (TICKETS, 'Tickets'),
+    )
     MAX_IMAGE_SIZE = 500
 
     image = models.ImageField(null=True)
     name = models.CharField(max_length=50)
     description = models.TextField(null=True)
     reserved_price = models.DecimalField(decimal_places=2, max_digits=9)
+    category = models.CharField(max_length=50, choices=CATEGORY_CHOICES)
 
     @property
     def is_sold(self):
