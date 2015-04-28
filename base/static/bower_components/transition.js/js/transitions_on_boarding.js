@@ -408,9 +408,11 @@ var PageTransitions = (function () {
                 currentPageIndex = gotoPage - 1 ;
             }
 
+
             // Check if the current page is same as the next page then do not do the animation
             // else reset the 'isAnimatiing' flag
             if (tempPageIndex != currentPageIndex) {
+                updateVisibility(currentPageIndex);
                 $pageWrapper.data('current', currentPageIndex);
 
                 // Next page to be animated.
@@ -459,6 +461,55 @@ var PageTransitions = (function () {
         $nextPage.attr('class', $nextPage.data('originalClassList') + ' pt-page-current');
     }
 
+    function updateVisibility(currentPageIndex) {
+        $('.pt-page').each(function() {
+            var pageNum = this.className.split(' ')[1].split('-')[2];
+            var isCurrent = parseInt(pageNum) === currentPageIndex + 1;
+
+            console.log(pageNum);
+            console.log(isCurrent);
+            console.log(currentPageIndex)
+            if (isCurrent){
+                var isFirstPage = pageNum === "1",
+                    isLastPage = pageNum === "5";
+                if (!isFirstPage) {
+                    $('.pt-trigger').first()
+                        .css('visibility', 'visible')
+                        .animate({ opacity: 1 }, 800)
+                } else {
+                    $('.pt-trigger').first()
+                        .animate({ opacity: 0 }, 800)
+                        .css('visibility', 'hidden')
+
+                }
+
+                if (isLastPage){
+                    $('.pt-trigger-container').animate({opacity: 0, 'visibility': 'hidden'}, 800)
+                               //.css('visibility', 'hidden')
+                    //})
+                } else {
+                    var $this = $('.pt-trigger-container');
+                    if ($this.css('hidden')) {
+                            $this.css('visibility', 'visible')
+                                 .animate({ opacity: 1 }, 800)
+                    }
+                }
+            }
+        })
+    }
+
+    function changeVisibility(elem, visibility) {
+        $(elem).css('visibility', visibility);
+    }
+
+    function landingVisbility() {
+        $('.pt-trigger').first().css('visibility', 'hidden')
+    }
+
+    function endingVisibility() {
+        $('.pt-trigger').last().css('visibility', 'hidden')
+    }
+
     return {
         init : init,
     };
@@ -468,4 +519,5 @@ var PageTransitions = (function () {
 $(document).ready(function() {
     // initializing page transition.
     PageTransitions.init();
+
 });

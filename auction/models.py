@@ -14,13 +14,13 @@ import os
 class InventoryItem(models.Model):
     FURNITURE = 'furniture'
     ELECTRONICS = 'electronics'
-    JEWLERY = 'jewlery'
+    JEWELERY = 'jewelery'
     INSTRUMENTS = 'music_instruments'
     TICKETS = 'tickets'
     CATEGORY_CHOICES = (
         (FURNITURE, 'Furniture'),
         (ELECTRONICS, 'Electronics'),
-        (JEWLERY, 'Jewlery'),
+        (JEWELERY, 'Jewelery'),
         (INSTRUMENTS, 'Instruments'),
         (TICKETS, 'Tickets'),
     )
@@ -30,7 +30,7 @@ class InventoryItem(models.Model):
     name = models.CharField(max_length=50)
     description = models.TextField(null=True)
     reserved_price = models.DecimalField(decimal_places=2, max_digits=9)
-    category = models.CharField(max_length=50, choices=CATEGORY_CHOICES)
+    category = models.CharField(max_length=50, choices=CATEGORY_CHOICES, default=FURNITURE)
 
     @property
     def is_sold(self):

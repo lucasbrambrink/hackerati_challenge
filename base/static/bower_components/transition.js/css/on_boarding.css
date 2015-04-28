@@ -11,8 +11,8 @@ html, body {
 }
 
 body {
-    font-family: 'Lato', Calibri, Arial, sans-serif;
-    color: #fff;
+    font-family: 'Lato', sans-serif;
+    color: #000000;
     background: #333;
     overflow: hidden;
 }
@@ -45,14 +45,31 @@ body {
     transform-style: preserve-3d;
 }
 
-.pt-page .page-content {
-    position: fixed;
-    top: 40%;
-    left: 35%;
-
+.pt-page label {
+    font-size: 150%;
 }
+
+.pt-page input {
+    margin-left: 4em;
+    margin-top: 3px;
+    width: 70%;
+}
+
+.pt-page .page-content {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    position: fixed;
+    top: 35%;
+    left: 25%;
+    width: 400px;
+    height: 400px;
+}
+
 .pt-page .page-content .question {
-    text-align: right;
+    /*float: right;*/
+    /*text-align: right;*/
+    right: 45%;
 }
 
 .pt-page-current, .no-js .pt-page {
@@ -69,7 +86,7 @@ body {
     display: inline;
     /*width: */
     top: 40%;
-    right: 30%;
+    right: 25%;
     z-index: 999999;
     -webkit-transform: translateX(-50%);
     -moz-transform: translateX(-50%);
@@ -86,28 +103,29 @@ body {
 .pt-page-ontop {
     z-index: 999;
 }
+
 .pt-page-1 {
-    background: #0ac2d2;
+    background: rgb(213, 255, 212);
 }
 
 .pt-page-2 {
-    background: #7bb7fa;
+    background: rgb(255, 237, 152);
 }
 
 .pt-page-3 {
-    background: #60d7a9;
+    background: rgb(255, 191, 124);
 }
 
 .pt-page-4 {
-    background: #fdc162;
+    background: rgb(188, 246, 172);
 }
 
 .pt-page-5 {
-    background: #fd6a62;
+    background: rgb(249, 228, 182);
 }
 
 .pt-page-6 {
-    background: #f68dbb;
+    background: rgb(97, 185, 255);
 }
 
 /*No Animation Support Message Style*/
