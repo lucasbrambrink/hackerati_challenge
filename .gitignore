@@ -1,6 +1,10 @@
 ## Local Files to be Ignored
 local_settings.py
 
+# virtualenv
+bin/
+include/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
