@@ -12,37 +12,45 @@
 <div class="pt-wrapper">
     <div class="pt-trigger-container">
         <div class="pt-trigger" data-animation="4" data-goto="-2">
-            <div class="btn btn-primary">Prev</div>
+            <div class="btn btn-default">PREV</div>
         </div>
         <div class="pt-trigger" data-animation="3" data-goto="-1">
-            <div class="btn btn-primary">Next</div>
+            <div class="btn btn-default">NEXT</div>
         </div>
     </div>
 
     {#  ON BOARDING QUESTIONAIRE  #}
     <div class="pt-page pt-page-1 pt-page-current">
-        <label class="question">What is your name?</label>
-        <input type="text" value="Name" name="name">
+        <div class='page-content'>
+            <label class="question">What is your name?</label>
+            <input type="text" value="Name" name="name">
+        </div>
     </div>
     <div class="pt-page pt-page-2">
-        <label class="question">Select a username!</label>
-        <input type="text" value="Name" name="name">
-    </div>
+        <div class='page-content'>
+            <label class="question">Select a username!</label>
+            <input type="text" value="Name" name="name">
+        </div>
     <div class="pt-page pt-page-3">
-        <label class="question">Choose a password!</label>
-        <input type="text" value="Name" name="name">
-        <input type="text" value="Name" name="name">
+        <div class='page-content'>
+            <label class="question">Choose a password!</label>
+            <input type="text" value="Name" name="name">
+            <input type="text" value="Name" name="name">
+        </div>
     </div>
     <div class="pt-page pt-page-4">
-        <label class="question">Would you like to buy or sell</label>
-
-        <input type="radio" value="yes" name="auctioneer">Yes
-        <input type="radio" value="no" name="auctioneer">No
+        <div class='page-content'>
+            <label class="question">Would you like to buy or sell</label>
+            <input type="radio" value="yes" name="auctioneer">Yes
+            <input type="radio" value="no" name="auctioneer">No
+        </div>
     </div>
     <div class="pt-page pt-page-5">
-        <label class="question">For joining our site, you have been given
-        $1000 to bid on auctions as you please!</label>
-        <div class="btn btn-success">Start!</div>
+        <div class='page-content'>
+            <label class="question">For joining our site, you have been given
+            $1000 to bid on auctions as you please!</label>
+            <div class="btn btn-success">Start!</div>
+        </div>
     </div>
 </div>
 

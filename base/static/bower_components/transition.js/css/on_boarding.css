@@ -45,6 +45,16 @@ body {
     transform-style: preserve-3d;
 }
 
+.pt-page .page-content {
+    position: fixed;
+    top: 40%;
+    left: 35%;
+
+}
+.pt-page .page-content .question {
+    text-align: right;
+}
+
 .pt-page-current, .no-js .pt-page {
     visibility: visible;
     z-index: 1;
@@ -56,13 +66,20 @@ body {
 
 .pt-trigger-container {
     position: absolute;
-    width: 300px;
+    display: inline;
+    /*width: */
+    top: 40%;
+    right: 30%;
     z-index: 999999;
-    left: 50%;
     -webkit-transform: translateX(-50%);
     -moz-transform: translateX(-50%);
     -ms-transform: translateX(-50%);
     transform: translateX(-50%);
+}
+
+.pt-trigger {
+    display: inline;
+    margin-left: 1em;
 }
 
 /* Page Styles */
