@@ -1,5 +1,6 @@
 __author__ = 'lb'
 from bs4 import BeautifulSoup
+from .models import InventoryItem
 import requests
 import re
 
@@ -17,10 +18,27 @@ class AutoPopulateThroughCraigslist(object):
         (MAXPRICE, 'max'),
     )
 
+    def __init__(self, query='furniture', number_to_import=10, min_price='300', max_price='500'):
+        self.query = query
+        self.number_to_import = number_to_import
+        self.min_price = min_price
+        self.max_price = max_price
 
-    def run_global_import(self, num=10):
-        soup = self.fetch_craigslist_page(filters={'min': '300'}, query='furniture')
-        self.visit_each_posting(soup, num=10)
+
+    def run_global_import(self, query='furniture'):
+        soup = self.fetch_craigslist_page(filters={'min': self.min_price}, query=self.query)
+        new_inventory_data = self.visit_each_posting(soup, num=self.number_to_import)
+
+        for inventory in new_inventory_data:
+            new_inventory = InventoryItem(
+                image_url=inventory[0],
+                name=inventory[1],
+                reserved_price=float(inventory[2])
+            )
+            new_inventory.save()
+            new_inventory.upload_image_from_url()
+
+        return True
 
     def fetch_craigslist_page(self, filters={}, query=None):
         """

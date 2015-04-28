@@ -7,7 +7,7 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('base', '0001_initial'),
+        ('base', '__first__'),
     ]
 
     operations = [
@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
             name='Auction',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('bid_log', models.TextField()),
+                ('bid_log', models.TextField(null=True)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('hours_duration', models.IntegerField()),
                 ('sold_item', models.BooleanField(default=False)),
@@ -45,9 +45,11 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('image', models.ImageField(null=True, upload_to=b'')),
+                ('image_url', models.CharField(default=b'', max_length=600)),
                 ('name', models.CharField(max_length=50)),
                 ('description', models.TextField(null=True)),
                 ('reserved_price', models.DecimalField(max_digits=9, decimal_places=2)),
+                ('category', models.CharField(default=b'furniture', max_length=50, choices=[(b'furniture', b'Furniture'), (b'electronics', b'Electronics'), (b'jewelery', b'Jewelery'), (b'music_instruments', b'Instruments'), (b'tickets', b'Tickets')])),
             ],
             options={
             },

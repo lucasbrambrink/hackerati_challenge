@@ -17,7 +17,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('user_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to=settings.AUTH_USER_MODEL)),
                 ('name', models.CharField(max_length=50)),
-                ('money_in_bank', models.DecimalField(default=10000.0, max_digits=9, decimal_places=2)),
+                ('balance', models.DecimalField(default=10000.0, max_digits=9, decimal_places=2)),
                 ('is_seller', models.BooleanField(default=False)),
             ],
             options={

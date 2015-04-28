@@ -4,7 +4,7 @@ from base.utils import FormatHelper as fh
 from base.models import HackeratiUser
 from PIL import Image
 from django.conf import settings
-from io import StringIO
+from io import BytesIO
 from django.core.files.uploadedfile import InMemoryUploadedFile
 import requests
 import datetime
@@ -27,6 +27,7 @@ class InventoryItem(models.Model):
     MAX_IMAGE_SIZE = 500
 
     image = models.ImageField(null=True)
+    image_url = models.CharField(max_length=600, null=False, default='')
     name = models.CharField(max_length=50)
     description = models.TextField(null=True)
     reserved_price = models.DecimalField(decimal_places=2, max_digits=9)
@@ -37,13 +38,14 @@ class InventoryItem(models.Model):
         return len(self.item.all()) > 0
 
 
-
     ###---< Image Utility Methods >---###
-    def upload_image_from_url(self, url):
+    def upload_image_from_url(self, url=None):
         """
         :param url: ``str``
         :return: None, mutates self by saving new image
         """
+        url = self.image_url if not url else url
+
         image_stream = self.fetch_image_stream_from_url(url)
 
         file_name = fh.pythonify("{name}_{id}.jpg".format(
@@ -51,7 +53,7 @@ class InventoryItem(models.Model):
         ))
         self.remove_same_name(name=file_name)
         django_file = InMemoryUploadedFile(image_stream, None, file_name, 'image/jpeg',
-                                  image_stream.len, None)
+                                  None, None)
         # save
         self.image.save(file_name, django_file, save=True)
         self.save()
@@ -63,7 +65,9 @@ class InventoryItem(models.Model):
         """
         # fetch image from url
         image_stream = requests.get(url)
-        image = Image.open(StringIO(image_stream.content))
+        print (image_stream)
+        # print (StringIO(image_stream.content))
+        image = Image.open(BytesIO(image_stream.content))
 
         # resize image
         original_size = image.size
@@ -74,7 +78,7 @@ class InventoryItem(models.Model):
         resized_image = image.resize(compressed_size, Image.ANTIALIAS)
 
         # upload to stream
-        image_stream = StringIO()
+        image_stream = BytesIO()
         resized_image.save(image_stream, format="JPEG")
 
         return image_stream
