@@ -2,6 +2,8 @@ from django.db import models
 from django.db.models import ImageField
 from base.utils import FormatHelper as fh
 from base.models import HackeratiUser
+from django.db.models.signals import pre_save, post_init
+from django.dispatch import receiver
 from PIL import Image
 from django.conf import settings
 from io import BytesIO
@@ -35,7 +37,7 @@ class InventoryItem(models.Model):
 
     @property
     def is_sold(self):
-        return len(self.item.all()) > 0
+        return len(self.purchase.all()) > 0
 
 
     ###---< Image Utility Methods >---###
@@ -124,11 +126,13 @@ class Auction(models.Model):
     ###---< Properties >---###
     @property
     def current_highest_bid(self):
+        if self.bids.count() == 0:
+            return 0.0
         return max(getattr(bid.price) for bid in self.bids.all())
 
     @property
     def _starting_price(self):
-        return 0.1 * self.item.reserved_price
+        return 0.1 * float(self.item.reserved_price)
 
     @property
     def _end_price(self):
@@ -175,6 +179,14 @@ class Auction(models.Model):
 
         highest_bid = self.bids.order_by('-price')[0]
         Purchase.objects.create(highest_bid.__dict__)
+
+
+@receiver(pre_save, sender=Auction)
+def execute_pre_save(sender, instance, *args, **kwargs):
+    if not instance.id:
+        instance.starting_price = instance._starting_price
+    instance.current_price = instance.current_highest_bid.price if instance.bids.count() > 0 else 0
+
 
 
 

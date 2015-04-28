@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
-from .models import InventoryItem
+from .models import InventoryItem, Auction
 
 # Create your views here.
 
@@ -8,5 +8,8 @@ class AuctionView(TemplateView):
     template_name = 'auction/main.html'
 
     def get(self, request, *args, **kwargs):
-        return render(request, self.template_name, {'items': InventoryItem.objects.all()})
+        return render(request, self.template_name, {
+            'items': InventoryItem.objects.all(),
+            'auctions': Auction.objects.all(),
+        })
 

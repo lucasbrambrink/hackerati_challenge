@@ -11,17 +11,27 @@
         <h1>Hackerati Auction</h1>
     </div>
 
-    <div class="auction-focus">
-        <!--{% for item in items %}-->
-            <!--<div class="auction-item">-->
-                <!--<h3>{{ item.name }}</h3>-->
-                <!--<h3>${{ item.reserved_price }}</h3>-->
-                <!--<img src="{{ item.image.url }}">-->
-            <!--</div>-->
-        <!--{% endfor %}-->
+    <div class="auction-focus col-md-6">
+        {% for auction in auctions %}
+            <div class="auction" style='background-image: url({{ item.image.url }})'>
+                <h3>{{ auction.item.name }}</h3>
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <td>Asking Price</td>
+                            <td>${{ auction.item.reserved_price }}</td>
+                        </tr>
+                        <tr>
+                            <td>Current Bid</td>
+                            <td>${{ auction.current_highest_bid }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        {% endfor %}
     </div>
 
-    <div class="ongoing-auctions">
+    <div class="ongoing-auctions col-md-3">
         <div class="filter">
             <ul>
                 <li>Price</li>
@@ -30,15 +40,13 @@
             </ul>
         </div>
         {% for item in items %}
-            <div class="auction-item">
-                <!--<h3>{{ item.name }}</h3>-->
-                <!--<h3>${{ item.reserved_price }}</h3>-->
-                <img src="{{ item.image.url }}">
+            <div class="auction-item" id='auction-{{ item.id }}'style='background-image: url({{ item.image.url }})'>
+                <h3>{{ item.name }} : ${{ item.reserved_price }}</h3>
             </div>
         {% endfor %}
     </div>
 
-    <div class="control-panel">`
+    <div class="control-panel col-md-3">`
         <h4>{{ user.name }}</h4>
         <h4>Balance : {{ user.balance }}</h4>
         <div class="actions btn btn-default">Post New Auction</div>
