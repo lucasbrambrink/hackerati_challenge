@@ -30,6 +30,15 @@ class AutoPopulateThroughCraigslist(object):
         new_inventory_data = self.visit_each_posting(soup, num=self.number_to_import)
 
         for inventory in new_inventory_data:
+            if inventory.count(None) > 0:
+                # if any of the essential values are none, simply skip it
+                continue
+
+            if InventoryItem.objects.count(name__icontains=inventory[1]) > 0:
+                # if an item already exists with a similar enough name, don't upload
+                # to avoid duplication
+                continue
+
             new_inventory = InventoryItem(
                 image_url=inventory[0],
                 name=inventory[1],
@@ -105,7 +114,12 @@ class AutoPopulateThroughCraigslist(object):
                 if text[0] == '$':
                     price = text[1:]
                 else:
-                    name = text.split(' - ')[0]
+                    name_uninspected = text.split(' - ')[0]
+                    if len([x for x in name_uninspected if not x.isalpha()]) < 5:
+                        # if the title contains too many non-alphanumeric characters,
+                        # it probably has annoying formatting and we can simply skip it
+                        # since we don't have to be discerning here
+                        name = name_uninspected
 
         return image_link, name, price
 
