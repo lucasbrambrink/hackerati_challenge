@@ -1,4 +1,5 @@
 __author__ = 'lb'
+from base.utils import FormatHelper as fh
 from bs4 import BeautifulSoup
 from .models import InventoryItem
 import requests
@@ -153,7 +154,7 @@ class AutoPopulateThroughCraigslist(object):
                         # if the title contains too many non-alphanumeric characters,
                         # it probably has annoying formatting and we can simply skip it
                         # since we don't have to be discerning here
-                        name = name_uninspected
+                        name = fh.capitalize(phrase=name_uninspected)
 
         return image_link, name, price
 
