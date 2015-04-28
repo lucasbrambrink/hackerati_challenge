@@ -24,36 +24,55 @@ class AutoPopulateThroughCraigslist(object):
         self.min_price = min_price
         self.max_price = max_price
 
+    def randomly_import_from_categories(self):
+        for category in InventoryItem.CATEGORY_CHOICES:
+            query = category[0].lower()
+            self.run_global_import(query)
 
+
+    ###---< Global Scrape for Query >---###
     def run_global_import(self, query='furniture'):
+        """
+        :param query: ``str`` to scrape results page for
+        :return: ``bool`` indicating whether new objects were imported
+        """
         soup = self.fetch_craigslist_page(filters={'min': self.min_price}, query=self.query)
         new_inventory_data = self.visit_each_posting(soup, num=self.number_to_import)
+        if not len(new_inventory_data):
+            return False
+
+        count_before = InventoryItem.objects.count()
 
         for inventory in new_inventory_data:
-            if inventory.count(None) > 0:
-                # if any of the essential values are none, simply skip it
-                continue
 
             if InventoryItem.objects.filter(name__icontains=inventory[1]).count() > 0:
                 # if an item already exists with a similar enough name, don't upload
                 # to avoid duplication
                 continue
 
+            print('data', inventory)
             new_inventory = InventoryItem(
                 image_url=inventory[0],
                 name=inventory[1],
                 reserved_price=float(inventory[2])
             )
-            new_inventory.save()
-            new_inventory.upload_image_from_url()
+            if new_inventory.upload_image_from_url():
+                new_inventory.save()
 
-        return True
+        count_after = InventoryItem.objects.count()
+        num_created = count_after - count_before
+        print("Imported", num_created, "Objects")
 
+        return True if num_created > 0 else False
+
+
+
+    ###---< Helper Methods >---###
     def fetch_craigslist_page(self, filters={}, query=None):
         """
-        :param filters:
-        :param query:
-        :return:
+        :param filters: ``dict`` for min, max prices
+        :param query: ``str`` search term for craigslist
+        :return: ``bs4 instance`` of CL page
         """
         # build parameter string in proper format
         query_params = "&".join(filter[0] + filters[filter[1]] for filter in self.FILTERS if filter[1] in filters)
@@ -71,19 +90,27 @@ class AutoPopulateThroughCraigslist(object):
         soup = BeautifulSoup(craiglist_page.content)
         return soup
 
+
     def visit_each_posting(self, soup=None, num=1):
-        count = 0
+        """
+        :param soup: ``bs4 - instance``
+        :param num: ``int`` maximum number of postings to visit
+        :return: ``tuple`` triplets  of url, name, price extracted from each posting page
+        """
         seen_links = []
         scraped_object_data = []
         for link in soup.findAll('a'):
             page_href = link.get('href')
             if page_href and re.search(r'\d{10}', page_href) and page_href not in seen_links:
                 data = self.data_extract_from_page(page_url=page_href)
+                if data.count(None) > 0:
+                    # if any of the essential values are none, simply skip it
+                    continue
+
                 scraped_object_data.append(data)
-                seen_links.append(page_href)
                 print(data)
-                count += 1
-            if count == num:
+                seen_links.append(page_href)
+            if len(scraped_object_data) == num:
                 break
 
         return scraped_object_data
@@ -91,10 +118,10 @@ class AutoPopulateThroughCraigslist(object):
 
     def data_extract_from_page(self, page_url=None):
         """ This is admitedly a little bit hacky (webscraping is never all that great)
-            but it was a matter of getting the project to an interesting scale quickyl
+            but it was a matter of getting the project to an interesting scale quickly
 
-        :param page_url:
-        :return:
+        :param page_url: ``str`` of posting to be visited & scraped
+        :return: ``tuple`` triplet of image_url, name, price
         """
         page = requests.get(self.BASELINK + page_url)
         soup = BeautifulSoup(page.content)
@@ -122,10 +149,6 @@ class AutoPopulateThroughCraigslist(object):
                         name = name_uninspected
 
         return image_link, name, price
-
-
-    def build_inventory_object(self, ):
-        pass
 
 
 

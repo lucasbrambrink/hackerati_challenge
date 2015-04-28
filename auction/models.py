@@ -24,7 +24,7 @@ class InventoryItem(models.Model):
         (INSTRUMENTS, 'Instruments'),
         (TICKETS, 'Tickets'),
     )
-    MAX_IMAGE_SIZE = 500
+    MAX_IMAGE_SIZE = 300
 
     image = models.ImageField(null=True)
     image_url = models.CharField(max_length=600, null=False, default='')
@@ -42,46 +42,60 @@ class InventoryItem(models.Model):
     def upload_image_from_url(self, url=None):
         """
         :param url: ``str``
-        :return: None, mutates self by saving new image
+        :return: ``bool`` if save successful, (image was large enough)
         """
         url = self.image_url if not url else url
 
-        image_stream = self.fetch_image_stream_from_url(url)
+        # fetch image from url
+        image = self.fetch_PIL_object_from_url(url)
+        # clean and validate size
+        valid, cleaned_image = self.clean_image(image)
+        if not valid:
+            return False
 
+        # if valid, upload to stream
+        image_stream = BytesIO()
+        cleaned_image.save(image_stream, format="JPEG")
+
+        # load into django
         file_name = fh.pythonify("{name}_{id}.jpg".format(
             name=self.name, price=self.reserved_price, id=self.pk
         ))
         self.remove_same_name(name=file_name)
-        django_file = InMemoryUploadedFile(image_stream, None, file_name, 'image/jpeg',
-                                  None, None)
+        django_file = InMemoryUploadedFile(image_stream, None, file_name, 'image/jpeg', None, None)
+
         # save
         self.image.save(file_name, django_file, save=True)
         self.save()
+        return True
 
-    def fetch_image_stream_from_url(self, url):
-        """
-        :param url: ``str``
-        :return: ``StringIO`` instance containing the image
-        """
-        # fetch image from url
-        image_stream = requests.get(url)
-        print (image_stream)
-        # print (StringIO(image_stream.content))
-        image = Image.open(BytesIO(image_stream.content))
 
-        # resize image
+    def clean_image(self, image):
+        """
+        :param image: ``PIL instance``
+        :return: ``PIL instance`` resized
+        """
         original_size = image.size
         limit = max(original_size)
+        if limit < int(self.MAX_IMAGE_SIZE):
+            return False, None
+
         resize_factor = float(limit) / float(self.MAX_IMAGE_SIZE)
         compressed_size = (int(round(original_size[0] / resize_factor)),
                            int(round(original_size[1] / resize_factor)))
-        resized_image = image.resize(compressed_size, Image.ANTIALIAS)
+        return True, image.resize(compressed_size, Image.ANTIALIAS)
 
-        # upload to stream
-        image_stream = BytesIO()
-        resized_image.save(image_stream, format="JPEG")
 
-        return image_stream
+    def fetch_PIL_object_from_url(self, url):
+        """
+        :param url: ``str``
+        :return: ``PIL instance``
+        """
+        # fetch image from url
+        image_stream = requests.get(url)
+        # print (StringIO(image_stream.content))
+        return Image.open(BytesIO(image_stream.content))
+
 
     @staticmethod
     def remove_same_name(name):
