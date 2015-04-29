@@ -28,7 +28,6 @@ SITE_NAME = basename(PROJECT_DIR)
 # EMAIL_HOST_USER = os.environ['EMAIL_HOST_USER']
 # EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
 
-
 ###---< Static Files >---####
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
