@@ -3,7 +3,8 @@
  */
 function changeEachVisibility(elem, visibility) {
     $(elem).each(function() {
-        $(this).css('visibility', 'hidden');
+        $(this).css('visibility', 'hidden')
+            .css('display', 'none');
     });
 }
 

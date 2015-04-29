@@ -25,9 +25,9 @@ function AJAXsignalEnd(import_type) {
 
 }
 
-function AJAXimportItemsFromCraigslist(import_type) {
+function AJAXimportItemsFromCraigslist(import_type, query) {
 
-    var data = {'id': id, 'import_type': import_type};
+    var data = {'import_type': import_type, 'query': query};
 
     $.ajax({
         type: 'POST',
@@ -43,10 +43,29 @@ function AJAXimportItemsFromCraigslist(import_type) {
             alert("error");
         }
     });
-
 }
 
-function AJAXcreateBid(bidAmount, auctionID) {
+function AJAXcreateNewAuction(type, id) {
+
+    var data = {'type': type, 'id': id};
+
+    $.ajax({
+        type: 'POST',
+        url: '/auction/auction/create/',
+        data: {
+            csrfmiddlewaretoken: $.cookie('csrftoken'),
+            data: JSON.stringify(data)
+        },
+        success: function (data) {
+            console.log('success');
+        },
+        error: function (xhr, errmsg, err) {
+            alert("error");
+        }
+    });
+}
+
+function AJAXcreateBid($highestBid, bidAmount, auctionID) {
     var data = { 'amount': bidAmount, 'id': auctionID };
 
     $.ajax({

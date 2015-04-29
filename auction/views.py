@@ -67,12 +67,12 @@ class AuctionView(View):
             auction_initiator = AuctionInitiator(user_id=user.id)
 
             create_type = post['type']
-            duration = post['duration']
+            duration = post['duration'] if 'duration' in post else 3
 
-            if create_type == 'random':
-                auction_initiator.initiate_auction_from_all_items()
+            if create_type == 'all':
+                success = auction_initiator.initiate_auction_from_all_items()
 
-            if create_type == 'specific':
+            elif create_type == 'specific':
                 item_id = post['item_id']
                 item = InventoryItem.objects.get(id=int(item_id))
                 new_auction = Auction(
@@ -81,6 +81,11 @@ class AuctionView(View):
                     item=item,
                 )
                 new_auction.save()
+                success = True
+
+            return JsonResponse({
+                'success': success
+            })
 
         elif action == 'update':
             pass
@@ -110,7 +115,8 @@ class AuctionView(View):
             import_type = post['import_type']
 
             if import_type == 'query':
-                query = post['import_query']
+                query = post['query']
+                query = query if len(query) else 'furniture'
                 success = auction_initiator.perform_sync_from_craigslist(query, 10)
 
             if import_type == 'random':

@@ -29,6 +29,7 @@ $(document).ready(function() {
         var counterId = "#auction-counter-" + auctionID;
 
         changeEachVisibility('.auction-container', 'hidden');
+        $('.inventory-container').css('display', 'none');
         $('.counter-cell').each(function() {
             $(this).removeClass('active-counter')
         });
@@ -37,7 +38,7 @@ $(document).ready(function() {
         var expiration = $auction.data('seconds-left');
         var counter = createDateObject(expiration);
 
-        $auction.css('visibility', 'visible');
+        $auction.css('visibility', 'visible').css('display', 'block');
         $(counterId).addClass('active-counter').text(counter);
     });
 
@@ -51,12 +52,30 @@ $(document).ready(function() {
         var highestBid = parseInt($highestBid.text().slice(1));
 
         if (bidAmount && !isNaN(bidAmount) && bidAmount > highestBid) {
-            AJAXcreateBid(bidAmount, auctionID);
+            AJAXcreateBid($highestBid, bidAmount, auctionID);
         }
     })
 
-    $('')
+    $('#view-inventory').on('click', function(){
+        changeEachVisibility('.auction-container', 'hidden');
+        $('.inventory-container').css('display', 'inline');
+    });
 
+    $('#random-fetch').on('click', function(){
+        AJAXimportItemsFromCraigslist('random', null)
+    });
 
+    $('#query-fetch').on('click', function(){
+        var query = $('#query-term').val();
+        AJAXimportItemsFromCraigslist('query', query)
+    });
+
+    $('#auction-all').on('click', function(){
+        AJAXcreateNewAuction('all', null)
+    });
+
+    $('#post-new-auction').on('click', function(){
+        AJAXcreateNewAuction('specific', null)
+    })
 
 });

@@ -9,7 +9,7 @@ import re
 
 class AutoPopulateThroughCraigslist(object):
     BASELINK = "http://newyork.craigslist.org/"
-    QUERY_ADDON = "search/fua?"
+    QUERY_ADDON = "search/sss?"
     HASPIC = 'hasPic=1'
 
     MINPRICE = 'minAsk='
@@ -25,11 +25,6 @@ class AutoPopulateThroughCraigslist(object):
         self.number_to_import = number_to_import
         self.min_price = min_price
         self.max_price = max_price
-
-    def randomly_import_from_categories(self):
-        for category in InventoryItem.CATEGORY_CHOICES:
-            query = category[0].lower()
-            self.run_global_import(query)
 
 
     ###---< Global Scrape for Query >---###
