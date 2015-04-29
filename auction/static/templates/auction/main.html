@@ -19,7 +19,7 @@
                 <tbody>
                     <tr>
                         <td>Balance :</td>
-                        <td>${{ user.balance }}</td>
+                        <td id="user-balance">${{ user.balance }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -29,9 +29,8 @@
             <div class="actions btn btn-default" id="query-fetch">Fetch New Items from CL</div>
             <div class="actions btn btn-default" id="auction-all">Auction all Inventory</div>
             <div class="actions btn btn-default" id="post-new-auction">Post New Auction</div>
-
-
-
+            <input type="text" id='auction-duration' class="form-control" placeholder="Auction Duration [default 3hrs]" name="duration">
+            <div class="loading-div"><h4>...Loading...</h4></div>
         </div>
     </div>
 
@@ -40,7 +39,11 @@
             <h3>Inventory  : {{ user.name }}</h3>
             {% for item in user.item.all %}
                 <div class="inventory-item" id='inventory-{{ item.id }}'>
-                    <h3>{{ item.name }} : ${{ item.reserved_price }}</h3>
+                    <h3>
+                        {{ item.name }} : ${{ item.reserved_price }}
+                        <span data-item-id="{{ item.id }}" class="btns btn-remove glyphicon glyphicon-remove" aria-hidden="true"></span>
+                        <span data-item-id="{{ item.id }}" class="btns btn-initiate-auction glyphicon glyphicon-plus" aria-hidden="true"></span>
+                    </h3>
                     <div class='item-image' style='background-image: url({{ item.image.url }})'></div>
                 </div>
             {% endfor %}

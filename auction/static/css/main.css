@@ -95,6 +95,9 @@ body {
   width: 100%;
   background-color: black;
 }
+.container .auction-focus .inventory-container .inventory-item h3 .btns {
+  float: right;
+}
 .container .auction-focus .inventory-container .inventory-item .item-image {
   width: 100%;
   height: 95%;
@@ -155,4 +158,8 @@ body {
 }
 .container .control-panel .action-container input {
   text-align: center;
+}
+.container .control-panel .action-container .loading-div {
+  visibility: hidden;
+  margin-top: 2em;
 }

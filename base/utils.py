@@ -20,3 +20,7 @@ class FormatHelper(object):
             username=username,
             num=num
         )
+
+    @staticmethod
+    def format_money(num):
+        return "${0:.2f}".format(float(num))

@@ -3,6 +3,7 @@ from django.views.generic import TemplateView, View
 from .models import InventoryItem, Auction, Bid
 from .scripts import AuctionInitiator
 from base.models import HackeratiUser
+from base.utils import FormatHelper as fh
 from django.http import JsonResponse
 import json
 
@@ -39,17 +40,20 @@ class BiddingView(View):
             auction_id = post['id']
             amount = post['amount']
 
+            user.subtract_from_balance(auction_id, amount)
+
             new_bid = Bid(
                 user_id=user_id,
                 auction_id=auction_id,
                 price=amount
             )
-            new_bid.save()
 
+            new_bid.save()
             return JsonResponse({
                 'username': user.username,
-                'price': "${0:.2f}".format(float(amount)),
+                'price': fh.format_money(amount),
                 'time': new_bid.created_at,
+                'balance': fh.format_money(user.balance),
             })
 
 
@@ -127,9 +131,39 @@ class AuctionView(View):
             })
 
 
+class ItemView(View):
 
+    def post(self, request, action=None, *args, **kwargs):
+        user_id = request.session.get('id')
+        if user_id:
+            user = HackeratiUser.objects.get(id=int(user_id))
+        post = json.loads(request.POST['data'])
+        print(post)
+        success = False
 
+        if action == 'delete':
+            item_id = post['item_id']
+            item = InventoryItem.objects.get(id=int(item_id))
+            for auction in item.auction.all():
+                auction.delete()
+            item.delete()
+            success = True
 
+        elif action == 'init':
+            item_id = post['item_id']
+            duration = post['duration'] if 'duration' in post else 3
+            item = InventoryItem.objects.get(id=int(item_id))
+            if not item.is_being_auctioned:
+                new_auction = Auction(
+                    hours_duration=duration,
+                    item_id=int(item_id),
+                    user=user
+                )
+                new_auction.save()
+
+        return JsonResponse({
+                'success': success
+        })
 
 
 

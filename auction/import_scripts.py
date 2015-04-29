@@ -152,6 +152,7 @@ class AutoPopulateThroughCraigslist(object):
                         # it probably has annoying formatting and we can simply skip it
                         # since we don't have to be discerning here
                         name = fh.capitalize(phrase=name_uninspected)
+                        name = name.strip('For Sale') # this fails nice and silently
 
         return image_link, name, price
 

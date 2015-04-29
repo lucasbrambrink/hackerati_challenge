@@ -50,8 +50,9 @@ $(document).ready(function() {
         var auctionID = $bidForm.context.className.split(' ')[2].split('-')[2];
         var $highestBid = $('.highest-bid-' + auctionID);
         var highestBid = parseInt($highestBid.text().slice(1));
-
-        if (bidAmount && !isNaN(bidAmount) && bidAmount > highestBid) {
+        var currentBalance = parseFloat($('#user-balance').text().slice(1));
+        console.log(currentBalance)
+        if (bidAmount && !isNaN(bidAmount) && bidAmount > highestBid && bidAmount <= currentBalance) {
             AJAXcreateBid($highestBid, bidAmount, auctionID);
         }
     })
@@ -76,6 +77,17 @@ $(document).ready(function() {
 
     $('#post-new-auction').on('click', function(){
         AJAXcreateNewAuction('specific', null)
+    })
+
+    $('.btn-remove').on('click', function(){
+        var itemID = $(this).data('item-id');
+        AJAXremoveItem(itemID);
+    });
+
+    $('.btn-initiate-auction').on('click', function(){
+        var itemID = $(this).data('item-id');
+        var duration = $('#auction-duration').val();
+        AJAXinitiateAuction(itemID, duration);
     })
 
 });

@@ -2,7 +2,7 @@ from django.db import models
 from django.db.models import ImageField
 from base.utils import FormatHelper as fh
 from base.models import HackeratiUser
-from django.db.models.signals import pre_save, post_init
+from django.db.models.signals import pre_save, post_delete
 from django.dispatch import receiver
 from PIL import Image
 from django.conf import settings
@@ -109,6 +109,16 @@ class InventoryItem(models.Model):
             if file == name:
                 path = os.path.join(settings.MEDIA_ROOT, file)
                 os.remove(path)
+
+
+
+@receiver(post_delete, sender=InventoryItem)
+def auto_delete_file_on_delete(sender, instance, *args, **kwargs):
+    """auto-delete image jps from filesystem
+    upon deleting the `InventoryItem` instance"""
+    if instance.image:
+        if os.path.isfile(instance.image.path):
+            os.remove(instance.image.path)
 
 
 

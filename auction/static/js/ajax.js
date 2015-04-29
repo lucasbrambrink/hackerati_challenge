@@ -29,6 +29,7 @@ function AJAXimportItemsFromCraigslist(import_type, query) {
 
     var data = {'import_type': import_type, 'query': query};
 
+    $('.loading-div').css('visibility', 'visible');
     $.ajax({
         type: 'POST',
         url: '/auction/auction/import/',
@@ -38,6 +39,7 @@ function AJAXimportItemsFromCraigslist(import_type, query) {
         },
         success: function (data) {
             console.log('success');
+            $('.loading-div').css('visibility', 'hidden');
         },
         error: function (xhr, errmsg, err) {
             alert("error");
@@ -58,11 +60,14 @@ function AJAXcreateNewAuction(type, id) {
         },
         success: function (data) {
             console.log('success');
+            location.reload();
         },
         error: function (xhr, errmsg, err) {
             alert("error");
         }
     });
+
+
 }
 
 function AJAXcreateBid($highestBid, bidAmount, auctionID) {
@@ -84,6 +89,54 @@ function AJAXcreateBid($highestBid, bidAmount, auctionID) {
             console.log($tableBids);
             $tableBids.prepend("<tr>" + col1 + col2 + col3 + "</tr>");
             $highestBid.html(data['price']);
+
+            $('#user-balance').html(data['balance']);
+            console.log('success')
+        },
+        error: function (xhr, errmsg, err) {
+            alert("error");
+        }
+    });
+}
+
+function AJAXremoveItem(itemID) {
+
+    var data = {'item_id': itemID};
+    console.log(data)
+    $.ajax({
+        type: 'POST',
+        url: '/auction/item/delete/',
+        data: {
+            csrfmiddlewaretoken: $.cookie('csrftoken'),
+            data: JSON.stringify(data)
+        },
+        success: function (data) {
+            var identifier = '#inventory-' + itemID;
+            $(identifier).remove();
+
+            console.log('success')
+        },
+        error: function (xhr, errmsg, err) {
+            alert("error");
+        }
+    });
+}
+
+function AJAXinitiateAuction(itemID, duration) {
+
+    var data = {'item_id': itemID, 'duration': duration};
+
+    $.ajax({
+        type: 'POST',
+        url: '/auction/item/init/',
+        data: {
+            csrfmiddlewaretoken: $.cookie('csrftoken'),
+            data: JSON.stringify(data)
+        },
+        success: function (data) {
+            location.reload();
+            alert("Item offered for Auction!");
+
             console.log('success')
         },
         error: function (xhr, errmsg, err) {
