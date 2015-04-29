@@ -40,7 +40,9 @@ class BiddingView(View):
             auction_id = post['id']
             amount = post['amount']
 
-            user.subtract_from_balance(auction_id, amount)
+            auction = Auction.objects.get(id=int(auction_id))
+
+            user.subtract_from_balance(auction, amount)
 
             new_bid = Bid(
                 user_id=user_id,
@@ -74,18 +76,7 @@ class AuctionView(View):
             duration = post['duration'] if 'duration' in post else 3
 
             if create_type == 'all':
-                success = auction_initiator.initiate_auction_from_all_items()
-
-            elif create_type == 'specific':
-                item_id = post['item_id']
-                item = InventoryItem.objects.get(id=int(item_id))
-                new_auction = Auction(
-                    user_id=user.id,
-                    hours_duration=duration,
-                    item=item,
-                )
-                new_auction.save()
-                success = True
+                success = auction_initiator.initiate_auction_from_all_items(duration=duration)
 
             return JsonResponse({
                 'success': success
@@ -151,7 +142,7 @@ class ItemView(View):
 
         elif action == 'init':
             item_id = post['item_id']
-            duration = post['duration'] if 'duration' in post else 3
+            duration = post['duration'] if 'duration' in post else 1
             item = InventoryItem.objects.get(id=int(item_id))
             if not item.is_being_auctioned:
                 new_auction = Auction(

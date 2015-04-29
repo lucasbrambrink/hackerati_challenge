@@ -21,7 +21,7 @@ class AuctionInitiator(object):
                     )
                     new_auction.save()
 
-    def initiate_auction_from_all_items(self, duration=3):
+    def initiate_auction_from_all_items(self, duration=1):
         try:
             for item in InventoryItem.objects.filter(user_id=self.user_id):
                 if not item.is_being_auctioned:

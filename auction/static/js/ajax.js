@@ -3,9 +3,9 @@
  */
 
 
-function AJAXsignalEnd(import_type) {
+function AJAXsignalEnd(auctionID) {
 
-    var data = {'id': id, 'import_type': import_type};
+    var data = {'auction_id': auctionID };
 
     $.ajax({
         type: 'POST',
@@ -17,6 +17,7 @@ function AJAXsignalEnd(import_type) {
         success: function (data) {
             console.log('success');
             $('#auction-' + id).remove();
+            $('#auction-thumb-' + id).remove();
         },
         error: function (xhr, errmsg, err) {
             alert("error");
@@ -47,9 +48,9 @@ function AJAXimportItemsFromCraigslist(import_type, query) {
     });
 }
 
-function AJAXcreateNewAuction(type, id) {
+function AJAXcreateNewAuction(type, duration) {
 
-    var data = {'type': type, 'id': id};
+    var data = {'type': type, 'duration': duration};
 
     $.ajax({
         type: 'POST',

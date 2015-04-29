@@ -79,15 +79,32 @@ body {
 .container .auction-focus .auction-container .bid-information-table table tr:last-child td {
   border-bottom: 1px solid black;
 }
+.container .auction-focus .inventory-container .header table {
+  font-size: 90%;
+}
+.container .auction-focus .inventory-container .header table tr,
+.container .auction-focus .inventory-container .header table td,
+.container .auction-focus .inventory-container .header table th {
+  border: none;
+}
+.container .auction-focus .inventory-container .header table tr td:nth-child(1) {
+  text-align: right;
+  width: 35%;
+  border-right: 1px solid black;
+}
+.container .auction-focus .inventory-container .header table tr td:nth-child(2) {
+  text-align: left;
+}
 .container .auction-focus .inventory-container .inventory-item {
   margin-top: 8px;
   border-top: 2px solid black;
   width: 50%;
-  height: 150px;
+  height: 200px;
   float: left;
   text-align: center;
+  border-right: 1px solid white;
 }
-.container .auction-focus .inventory-container .inventory-item h3 {
+.container .auction-focus .inventory-container .inventory-item table {
   margin: 0;
   color: white;
   visibility: visible;
@@ -95,12 +112,27 @@ body {
   width: 100%;
   background-color: black;
 }
-.container .auction-focus .inventory-container .inventory-item h3 .btns {
-  float: right;
+.container .auction-focus .inventory-container .inventory-item table tr,
+.container .auction-focus .inventory-container .inventory-item table td {
+  margin: 0;
+  padding: 0;
+}
+.container .auction-focus .inventory-container .inventory-item table td {
+  border: none;
+  text-align: center;
+}
+.container .auction-focus .inventory-container .inventory-item table .btns {
+  margin-left: 5px;
+}
+.container .auction-focus .inventory-container .inventory-item table .btns:nth-child(1) {
+  margin-left: 0px;
+}
+.container .auction-focus .inventory-container .inventory-item table tr:nth-child(1) td:nth-child(1) {
+  border-bottom: 1px solid white;
 }
 .container .auction-focus .inventory-container .inventory-item .item-image {
   width: 100%;
-  height: 95%;
+  height: 90%;
 }
 .container .ongoing-auctions {
   height: 100%;

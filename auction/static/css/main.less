@@ -48,11 +48,26 @@ body {
 
 
     .inventory-container {
-      .inventory-item { margin-top: 8px; border-top: 2px solid black; width: 50%; height: 150px; float: left; text-align: center;
-         h3 { margin: 0; color: white; visibility: visible; font-size: 115%; width: 100%; background-color: black;
-         .btns {float: right; }
+      .header {
+        table { font-size: 90%;
+          tr, td, th { border: none; }
+          tr {
+            td:nth-child(1) { text-align: right; width: 35%; border-right: 1px solid black; }
+            td:nth-child(2) { text-align: left; }
+          }
+        }
+      }
+      .inventory-item { margin-top: 8px; border-top: 2px solid black; width: 50%; height: 200px; float: left; text-align: center; border-right: 1px solid white;
+         table { margin: 0; color: white; visibility: visible; font-size: 115%; width: 100%; background-color: black;
+           tr, td { margin: 0; padding: 0;}
+           td { border: none; text-align: center; }
+           .btns { margin-left: 5px; }
+           .btns:nth-child(1) {margin-left: 0px;}
+           tr:nth-child(1) {
+             td:nth-child(1) { border-bottom: 1px solid white;}
+           }
          }
-        .item-image { width: 100%; height: 95%; }
+         .item-image { width: 100%; height: 90%; }
       }
     }
   }

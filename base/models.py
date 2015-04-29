@@ -9,10 +9,12 @@ class HackeratiUser(User):
     is_seller = models.BooleanField(default=False)
     # everyone is a buyer
 
-    def subtract_from_balance(self, auction_id, amount):
+    def subtract_from_balance(self, auction, amount):
         # if we already have bid on this particular auction-item, only subtract the difference
-        highest_bid = max(bid.price for bid in self.bids.filter(auction_id=auction_id))
-        if not highest_bid:
+        self_made_bids = [bid.price for bid in auction.bids.filter(user_id=self.id)]
+        if len(self_made_bids):
+            highest_bid = max(self_made_bids)
+        else:
             highest_bid = 0
         amount = decimal.Decimal(amount) - decimal.Decimal(highest_bid)
 

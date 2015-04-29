@@ -37,6 +37,10 @@ class InventoryItem(models.Model):
     user = models.ForeignKey('base.HackeratiUser', related_name='item')
 
     @property
+    def shortened_name(self):
+        return " ".join(word for index, word in enumerate(self.name.split()) if index < 4)
+
+    @property
     def is_being_auctioned(self):
         return len(self.auction.all()) > 0
 

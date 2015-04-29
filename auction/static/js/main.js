@@ -16,7 +16,7 @@ $(document).ready(function() {
         var result = decrementCounter($active.text());
         if (!result) {
             var auctionId = $active.attr('id').split('-')[2];
-            signalEnd(auctionId);
+            AJAXsignalEnd(auctionId);
         } else {
             $active.html(decrementCounter($active.text()));
         }
@@ -72,12 +72,9 @@ $(document).ready(function() {
     });
 
     $('#auction-all').on('click', function(){
-        AJAXcreateNewAuction('all', null)
+        var duration = $('#auction-duration').val();
+        AJAXcreateNewAuction('all', duration)
     });
-
-    $('#post-new-auction').on('click', function(){
-        AJAXcreateNewAuction('specific', null)
-    })
 
     $('.btn-remove').on('click', function(){
         var itemID = $(this).data('item-id');
