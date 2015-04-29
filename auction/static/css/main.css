@@ -12,7 +12,9 @@ body {
 .container .auction-focus {
   display: block;
   text-align: center;
-  height: 600px;
+  height: 100%;
+  border-left: 1px solid black;
+  overflow: scroll;
 }
 .container .auction-focus .auction-container {
   position: absolute;
@@ -49,6 +51,24 @@ body {
 }
 .container .auction-focus .auction-container .auction-info table .place-new-bid-label td:nth-child(2) .input-group {
   width: 70%;
+}
+.container .auction-focus .auction-container .bid-information-table {
+  margin-top: -20px;
+}
+.container .auction-focus .auction-container .bid-information-table table {
+  text-align: center;
+}
+.container .auction-focus .auction-container .bid-information-table table tr:nth-child(1) td {
+  border-top: 1px solid black;
+}
+.container .auction-focus .auction-container .bid-information-table table td {
+  border: none;
+}
+.container .auction-focus .auction-container .bid-information-table table td:nth-child(1) {
+  border-right: 1px solid black;
+}
+.container .auction-focus .auction-container .bid-information-table table td:nth-child(2) {
+  border-right: 1px solid black;
 }
 .container .ongoing-auctions {
   height: 100%;

@@ -17,7 +17,10 @@ function counterTimeLeft(secondsLeft){
     var seconds = 0;
     while (rest > 0){ rest--; seconds++; }
 
-    return hours + " : " + minutes + " : " + seconds;
+    var minutesStr = minutes.toString().length == 1 ? "0" + minutes : minutes;
+    var secondsStr = seconds.toString().length == 1 ? "0" + seconds : seconds;
+
+    return hours + " : " + minutesStr + " : " + secondsStr;
 }
 
 function createDateObject(totalSecondsLeft) {
@@ -44,7 +47,10 @@ function decrementCounter(counter) {
     if (hours < 0) {
         console.log("AUCTION OVER")
     }
-    return hours + " : " + minutes + " : " + seconds;
+    var minutesStr = minutes.toString().length == 1 ? "0" + minutes : minutes;
+    var secondsStr = seconds.toString().length == 1 ? "0" + seconds : seconds;
+
+    return hours + " : " + minutesStr + " : " + secondsStr;
 }
 
 function changeEachVisibility(elem, visibility) {
