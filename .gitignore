@@ -1,5 +1,6 @@
 ## Local Files to be Ignored
 local_settings.py
+heroku_keys.sh
 
 # virtualenv
 bin/
