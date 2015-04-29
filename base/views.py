@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
-from models import HackeratiUser
+from .models import HackeratiUser
 from django.http import JsonResponse
 import json
 from faker import Faker
-from utils import FormatHelper as fh
+from .utils import FormatHelper as fh
 import datetime
 # Create your views here.
 
