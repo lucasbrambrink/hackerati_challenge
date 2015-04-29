@@ -86,7 +86,7 @@ class AuctionView(View):
             pass
 
         elif action == 'ending':
-            auction_id = post['id']
+            auction_id = post['auction_id']
             auction = Auction.objects.get(id=int(auction_id))
 
 

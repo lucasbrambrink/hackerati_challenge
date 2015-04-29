@@ -202,13 +202,22 @@ class Auction(models.Model):
         """
         pass
 
-    def on_closing(self):
+    def on_finish(self):
+        highest_bid = self.bids.order_by('-price')[0]
+        self.end_price = highest_bid
 
         if not self.was_successful:
             return False
 
-        highest_bid = self.bids.order_by('-price')[0]
-        Purchase.objects.create(highest_bid.__dict__)
+        new_purchase = Purchase(
+            item=self.item,
+            user=self.item.user,
+            price=highest_bid,
+            auction=self
+        )
+        new_purchase.save()
+        return True
+
 
 
 @receiver(pre_save, sender=Auction)
