@@ -38,6 +38,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'log_request_id.middleware.RequestIDMiddleware',
 )
 
 ROOT_URLCONF = 'auction_hackerati.urls'
