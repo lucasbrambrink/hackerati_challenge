@@ -57,11 +57,20 @@
         {% endfor %}
     </div>
 
-    <div class="control-panel col-md-3">`
-        <h4>{{ user.name }}</h4>
-        <h4>Balance : {{ user.balance }}</h4>
-        <div class="actions btn btn-default">Post New Auction</div>
-        <div class="actions btn btn-default">View Inventory</div>
+    <div class="control-panel col-md-3">
+        <div class="action-container">
+            <h4>{{ user.name }}</h4>
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <td>Balance :</td>
+                        <td>${{ user.balance }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="actions btn btn-default">Post New Auction</div>
+            <div class="actions btn btn-default">View Inventory</div>
+        </div>
     </div>
 
 </div>

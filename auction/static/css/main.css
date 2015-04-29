@@ -67,9 +67,22 @@
 .container .control-panel {
   height: 100%;
   border-left: 1px solid;
-  padding: 5em;
 }
-.container .control-panel div {
+.container .control-panel .action-container {
+  margin-left: 4em;
+  margin-top: 4em;
+  text-align: center;
+}
+.container .control-panel .action-container table td {
+  border: none;
+}
+.container .control-panel .action-container table td:nth-child(1) {
+  text-align: right;
+}
+.container .control-panel .action-container table td:nth-child(2) {
+  text-align: left;
+}
+.container .control-panel .action-container div {
   margin-top: 1em;
   display: block;
 }

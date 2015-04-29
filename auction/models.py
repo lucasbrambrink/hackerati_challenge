@@ -153,7 +153,12 @@ class Auction(models.Model):
 
     @property
     def is_active(self):
-        return self.ending_datetime < datetime.datetime.now(datetime.tzinfo)
+        return self.ending_datetime < datetime.datetime.now(datetime.timezone.utc)
+
+    @property
+    def number_of_seconds_left(self):
+        delta = self.ending_datetime - datetime.datetime.now(datetime.timezone.utc)
+        return delta.total_seconds()
 
     ###---< Internal Methods >---###
     def increase_current_bidding_price(self, value=None):

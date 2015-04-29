@@ -28,7 +28,14 @@
     }
   }
 
-  .control-panel { height: 100%; border-left: 1px solid; padding: 5em;
-    div { margin-top: 1em; display: block;}
+  .control-panel { height: 100%; border-left: 1px solid;
+    .action-container { margin-left: 4em; margin-top: 4em; text-align: center;
+      table {
+        td { border: none; }
+        td:nth-child(1) { text-align: right; }
+        td:nth-child(2) { text-align: left; }
+      }
+      div { margin-top: 1em; display: block;}
+    }
   }
 }

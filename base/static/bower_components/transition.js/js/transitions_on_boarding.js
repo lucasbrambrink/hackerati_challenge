@@ -534,22 +534,11 @@ var PageTransitions = (function () {
 
                 $('#target-name').html(userData['name']);
                 $('#target-username').html(userData['username']);
-                //for(var i = 0; i < userData.length; )
-                //
-                //$('#summary-table').html(data['user']);
-                //$('#ajax-panel').empty();
-                //$(data).find('item').each(function (i) {
-                //    $('#ajax-panel').append('<h4>' + $(this).find('title').text() + '</h4><p>' + $(this).find('link').text() + '</p>');
-                //});
             },
             error: function (xhr, errmsg, err) {
                 alert("error");
             }
         });
-
-
-
-
     }
 
 
@@ -564,13 +553,5 @@ var PageTransitions = (function () {
 $(document).ready(function() {
     // initializing page transition.
     PageTransitions.init();
-
-
-
-
-
-
-
-
 
 });

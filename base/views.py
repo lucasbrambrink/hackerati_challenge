@@ -5,7 +5,7 @@ from django.http import JsonResponse
 import json
 from faker import Faker
 from .utils import FormatHelper as fh
-
+import datetime
 # Create your views here.
 
 class OnBoardingView(TemplateView):
@@ -19,9 +19,8 @@ class OnBoardingView(TemplateView):
 
     def post(self, request, *args, **kwargs):
         print(request)
-        # session_id = request.SESSION
         post = json.loads(request.POST['data'])
-        print post
+        print (post)
 
         if not len(post['name']):
             name = self.faker.name()
@@ -37,8 +36,11 @@ class OnBoardingView(TemplateView):
             username=username
         )
         user.set_password(raw_password=password)
+        user.last_login = datetime.datetime.now()
+        user.save()
 
-        # user.save()
+
+        request.session['id'] = user.pk
         return JsonResponse({
             'user_data': {'name': user.name, 'username': user.username},
         })

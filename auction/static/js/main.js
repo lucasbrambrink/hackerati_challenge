@@ -12,4 +12,9 @@ $(document).ready(function() {
         });
         $(matchingID).css('visibility', 'visible');
     });
+
+    $('.bid')
+
+
+
 });
