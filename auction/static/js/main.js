@@ -29,6 +29,8 @@ $(document).ready(function() {
         var counterId = "#auction-counter-" + auctionID;
 
         changeEachVisibility('.auction-container', 'hidden');
+        $('#graph-container').css('display', 'none').css('visibility', 'hidden');
+
         $('.inventory-container').css('display', 'none');
         $('.counter-cell').each(function() {
             $(this).removeClass('active-counter')
@@ -59,7 +61,8 @@ $(document).ready(function() {
 
     $('#view-inventory').on('click', function(){
         changeEachVisibility('.auction-container', 'hidden');
-        $('.inventory-container').css('display', 'inline');
+        $('#chart-container').css('display', 'none').css('visibility', 'hidden');
+        $('.inventory-container').css('display', 'inline').css('visibility', 'visible');
     });
 
     $('#random-fetch').on('click', function(){
@@ -85,6 +88,13 @@ $(document).ready(function() {
         var itemID = $(this).data('item-id');
         var duration = $('#auction-duration').val();
         AJAXinitiateAuction(itemID, duration);
+    })
+
+    $('#view-graph').on('click', function(){
+        $('.inventory-container').css('display', 'none').css('visibility', 'hidden');
+        $('.auction-container').css('display', 'none').css('visibility', 'hidden');
+        $('#chart-container').css('display', 'inline').css('visibility', 'visible');
+        AJAXfetchGraphingData();
     })
 
 });

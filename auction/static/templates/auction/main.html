@@ -24,18 +24,19 @@
                 </tbody>
             </table>
             <div class="actions btn btn-default" id="view-inventory">View Inventory</div>
-            <!--<div class="actions btn btn-default" id="random-fetch">Random-fetch from CL</div>-->
+            <div class="actions btn btn-default" id="view-graph">View Auction Statistics</div>
             <input type="text" id='query-term' class="form-control" placeholder="Search Term, e.g. furniture" name="query">
             <div class="actions btn btn-default" id="query-fetch">Fetch New Items from CL</div>
             <input type="text" id='auction-duration' class="form-control" placeholder="Auction Duration [default 1hr]" name="duration">
             <div class="actions btn btn-default" id="auction-all">Auction all Inventory</div>
-            <div class="actions btn btn-default" id="view-graph">View Auction Statistics</div>
 
             <div class="loading-div"><h4>...Loading...</h4></div>
         </div>
     </div>
 
     <div class="auction-focus col-md-6">
+        <canvas id="chart-container"></canvas>
+
         <div class="inventory-container">
             <div class="header">
                 <h3>Inventory  : {{ user.name }}</h3>
@@ -47,11 +48,11 @@
                         </tr>
                         <tr>
                             <td><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></td>
-                            <td>Initiates the Item to be auctioned</td>
+                            <td>Offers the Item up for auction</td>
                         </tr>
                         <tr>
                             <td><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></td>
-                            <td>Removes the Item from the Inventory & Auction</td>
+                            <td>Removes the Item from Inventory & Auction</td>
                         </tr>
                     </tbody>
                 </table>
@@ -160,5 +161,7 @@
     <script type="text/javascript" src="{% static 'auction/js/main.js' %}"></script>
     <script type="text/javascript" src="{% static 'auction/js/helperFunctions.js' %}"></script>
     <script type="text/javascript" src="{% static 'auction/js/ajax.js' %}"></script>
+    <script type="text/javascript" src="{% static 'auction/js/auction-graph.js' %}"></script>
+
 
 {% endblock %}

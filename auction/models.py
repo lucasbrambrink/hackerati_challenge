@@ -10,6 +10,7 @@ from io import BytesIO
 from django.core.files.uploadedfile import InMemoryUploadedFile
 import requests
 import datetime
+import math
 import os
 
 
@@ -114,6 +115,20 @@ class InventoryItem(models.Model):
                 path = os.path.join(settings.MEDIA_ROOT, file)
                 os.remove(path)
 
+    @staticmethod
+    def graphing_data():
+        data_bins = {
+            0: [], 1: [], 2: [], 3: [], 4: [], 5: []
+        }
+        for item in InventoryItem.objects.all():
+            price = item.reserved_price
+            bin_key = int(math.floor(price / 100))
+            bin_key = 5 if bin_key > 5 else bin_key
+            data_bins[bin_key].append(price)
+        formatted_bins = []
+        for key, value in data_bins.items():
+            formatted_bins.append(len(value))
+        return formatted_bins
 
 
 @receiver(post_delete, sender=InventoryItem)
@@ -217,6 +232,22 @@ class Auction(models.Model):
         )
         new_purchase.save()
         return True
+
+    @staticmethod
+    def graphing_data():
+        data_bins = {
+            0: [], 1: [], 2: [], 3: [], 4: [], 5: []
+        }
+        for auction in Auction.objects.all():
+            price = auction.current_highest_bid
+            bin_key = int(math.floor(price / 100))
+            bin_key = 5 if bin_key > 5 else bin_key
+            data_bins[bin_key].append(price)
+
+        formatted_bins = []
+        for key, value in data_bins.items():
+            formatted_bins.append(len(value))
+        return formatted_bins
 
 
 

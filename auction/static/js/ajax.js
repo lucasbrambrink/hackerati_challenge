@@ -145,3 +145,18 @@ function AJAXinitiateAuction(itemID, duration) {
         }
     });
 }
+
+function AJAXfetchGraphingData(itemID, duration) {
+
+    $.ajax({
+        type: 'GET',
+        url: '/auction/auction/graph/',
+        success: function (data) {
+            console.log(data);
+            auctionData('chart-container', data['auction_data'], data['inventory_data'])
+        },
+        error: function (xhr, errmsg, err) {
+            alert("error");
+        }
+    });
+}

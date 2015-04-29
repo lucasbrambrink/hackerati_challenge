@@ -62,6 +62,16 @@ class BiddingView(View):
 ###---< Auction Logic >---###
 class AuctionView(View):
 
+    def get(self, request, action='data', *args, **kwargs):
+        auction_data = Auction.graphing_data()
+        inventory_data = InventoryItem.graphing_data()
+
+        return JsonResponse({
+            'auction_data': auction_data,
+            'inventory_data': inventory_data
+        })
+
+
     def post(self, request, action='create', *args, **kwargs):
         user_id = request.session.get('id')
         if user_id:

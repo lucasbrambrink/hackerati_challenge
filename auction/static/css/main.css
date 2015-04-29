@@ -9,7 +9,7 @@ body {
   padding: 0;
 }
 .container .header h1 {
-  border-bottom: 10px solid black;
+  border-bottom: 1px solid black;
   margin-bottom: 0;
   text-align: center;
 }
@@ -21,6 +21,11 @@ body {
   overflow: scroll;
   margin-left: 0;
   margin-right: 0;
+}
+.container .auction-focus #chart-container {
+  height: 560px;
+  width: 560px;
+  display: none;
 }
 .container .auction-focus .auction-container {
   position: absolute;
@@ -142,7 +147,7 @@ body {
   text-align: center;
 }
 .container .ongoing-auctions .filter {
-  height: 100px;
+  height: 60px;
 }
 .container .ongoing-auctions .auction-item {
   margin-top: 8px;
