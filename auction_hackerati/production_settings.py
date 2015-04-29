@@ -25,7 +25,7 @@ DATABASES = {
 }
 # Absolute filesystem path to the top-level project folder:
 SITE_ROOT = dirname(PROJECT_DIR)
-STATIC_ROOT = 'staticfiles'
+STATIC_ROOT = os.path.join(PROJECT_DIR, 'staticfiles')
 
 # Site name:
 SITE_NAME = basename(PROJECT_DIR)
