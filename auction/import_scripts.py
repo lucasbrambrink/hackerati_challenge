@@ -19,7 +19,8 @@ class AutoPopulateThroughCraigslist(object):
         (MAXPRICE, 'max'),
     )
 
-    def __init__(self, query='furniture', number_to_import=10, min_price='300', max_price='500'):
+    def __init__(self, user_id=1, query='furniture', number_to_import=10, min_price='300', max_price='500'):
+        self.user_id = user_id
         self.query = query
         self.number_to_import = number_to_import
         self.min_price = min_price
@@ -55,7 +56,8 @@ class AutoPopulateThroughCraigslist(object):
             new_inventory = InventoryItem(
                 image_url=inventory[0],
                 name=inventory[1],
-                reserved_price=float(inventory[2])
+                reserved_price=float(inventory[2]),
+                user_id=self.user_id
             )
             if new_inventory.upload_image_from_url():
                 new_inventory.save()

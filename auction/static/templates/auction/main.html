@@ -106,6 +106,7 @@
             </table>
             <div class="actions btn btn-default">Post New Auction</div>
             <div class="actions btn btn-default">View Inventory</div>
+            <div class="actions btn btn-default">Random Sync with CL</div>
         </div>
     </div>
 
@@ -116,4 +117,7 @@
 
 {% block scripts %}
     <script type="text/javascript" src="{% static 'auction/js/main.js' %}"></script>
+    <script type="text/javascript" src="{% static 'auction/js/helperFunctions.js' %}"></script>
+    <script type="text/javascript" src="{% static 'auction/js/ajax.js' %}"></script>
+
 {% endblock %}

@@ -55,7 +55,6 @@ class BiddingView(View):
 
 ###---< Auction Logic >---###
 class AuctionView(View):
-    auction_initiator = AuctionInitiator()
 
     def post(self, request, action='create', *args, **kwargs):
         user_id = request.session.get('id')
@@ -63,22 +62,30 @@ class AuctionView(View):
             user = HackeratiUser.objects.get(id=int(user_id))
         post = json.loads(request.POST['data'])
 
+
         if action == 'create':
+            auction_initiator = AuctionInitiator(user_id=user.id)
+
             create_type = post['type']
             duration = post['duration']
+
             if create_type == 'random':
-                self.auction_initiator.initiate_auction_from_all_items()
+                auction_initiator.initiate_auction_from_all_items()
 
             if create_type == 'specific':
                 item_id = post['item_id']
                 item = InventoryItem.objects.get(id=int(item_id))
                 new_auction = Auction(
+                    user_id=user.id,
                     hours_duration=duration,
                     item=item,
                 )
                 new_auction.save()
 
-        if action == 'update':
+        elif action == 'update':
+            pass
+
+        elif action == 'ending':
             auction_id = post['id']
             auction = Auction.objects.get(id=int(auction_id))
 
@@ -97,6 +104,22 @@ class AuctionView(View):
 
         elif action == 'delete':
             pass
+
+        elif action == 'import':
+            auction_initiator = AuctionInitiator(user_id=user.id)
+            import_type = post['import_type']
+
+            if import_type == 'query':
+                query = post['import_query']
+                success = auction_initiator.perform_sync_from_craigslist(query, 10)
+
+            if import_type == 'random':
+                success = auction_initiator.perform_random_sync_from_craigslist(10)
+
+            return JsonResponse({
+                'success': success
+            })
+
 
 
 
