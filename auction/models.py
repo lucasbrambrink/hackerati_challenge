@@ -36,6 +36,10 @@ class InventoryItem(models.Model):
     category = models.CharField(max_length=50, choices=CATEGORY_CHOICES, default=FURNITURE)
 
     @property
+    def is_being_auctioned(self):
+        return len(self.auction.all()) > 0
+
+    @property
     def is_sold(self):
         return len(self.purchase.all()) > 0
 
@@ -115,13 +119,14 @@ class Auction(models.Model):
     hours_duration = models.IntegerField()
 
     # Item
-    item = models.ForeignKey('InventoryItem', related_name='item')
+    item = models.ForeignKey('InventoryItem', related_name='auction')
     sold_item = models.BooleanField(default=False)
 
     # Prices
     current_price = models.DecimalField(max_digits=9, decimal_places=2, null=True)
     starting_price = models.DecimalField(max_digits=9, decimal_places=2)
     end_price = models.DecimalField(max_digits=9, decimal_places=2, null=True)
+
 
     ###---< Properties >---###
     @property

@@ -10,7 +10,7 @@ class FormatHelper(object):
     @staticmethod
     def capitalize(phrase):
         clean_phrase = "".join(char for char in phrase if char.isalpha() or char == " ").strip(' ')
-        return " ".join(word[0].upper() + word[1:].lower() for word in clean_phrase.split(' '))
+        return " ".join(word[0].upper() + word[1:].lower() for word in clean_phrase.split(' ') if len(word) > 1)
 
     @staticmethod
     def name_to_username(name):

@@ -13,9 +13,11 @@ class AuctionView(TemplateView):
         if user_id:
             user = HackeratiUser.objects.get(id=int(user_id))
 
+        # cannot filter by properties
+        active_auction = [auction for auction in Auction.objects.all() if auction.is_active]
+
         return render(request, self.template_name, {
             'user': user,
-            'items': InventoryItem.objects.all(),
-            'auctions': Auction.objects.all(),
+            'auctions': active_auction,
         })
 
