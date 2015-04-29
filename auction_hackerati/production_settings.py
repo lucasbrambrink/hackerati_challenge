@@ -1,13 +1,10 @@
 ###---< AUTH >---###
-
+import os
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 # Secret Key is env variable
 SECRET_KEY = os.environ['SECRET_KEY']
 
-
-
-import os
 from os.path import (dirname, basename)
 
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
