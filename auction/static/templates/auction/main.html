@@ -29,7 +29,7 @@
                             </tr>
                             <tr>
                                 <td>Current Highest Bid</td>
-                                <td>${{ auction.current_highest_bid }}</td>
+                                <td class="highest-bid-{{ auction.id }}">${{ auction.current_highest_bid }}</td>
                             </tr>
                             <tr>
                                 <td>Time Left in Auction</td>
@@ -38,10 +38,27 @@
                             <tr class="place-new-bid-label">
                                 <td>Place New Bid</td>
                                 <td>
-                                    <input type="text" class='form-control bid-form bid-form-{{ auction.item.id }}' placeholder="$$$" name="bid-amount">
-                                    <div class="btn btn-success">Bid</div>
+                                    <div class="input-group">
+                                      <span class="input-group-addon">$</span>
+                                      <input type="text" class="form-control bid-form bid-form-{{ auction.id }}" placeholder="bid price" name="bid-amount">
+                                      <span class="bid-btn-{{ auction.id }} input-group-addon btn btn-primary bid-btn">Bid
+                                      </span>
+                                    </div>
                                 </td>
                             </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    <table class="table">
+                        <tbody class="current-bid-info-{{ auction.id }}">
+                            {% for bid in auction.bids.all %}
+                                <tr>
+                                    <td>${{ bid.price }}</td>
+                                    <td>{{ bid.user.username }}</td>
+                                    <td>{{ bid.created_at }}</td>
+                                </tr>
+                            {% endfor %}
                         </tbody>
                     </table>
                 </div>

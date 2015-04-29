@@ -133,7 +133,7 @@ class Auction(models.Model):
     def current_highest_bid(self):
         if self.bids.count() == 0:
             return 0.0
-        return max(getattr(bid.price) for bid in self.bids.all())
+        return max(getattr(bid, 'price') for bid in self.bids.all())
 
     @property
     def _starting_price(self):
@@ -210,6 +210,9 @@ class Bid(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     auction = models.ForeignKey('Auction', related_name='bids')
     user = models.ForeignKey('base.HackeratiUser', related_name='bids')
+
+    class Meta:
+        ordering = ['-created_at']
 
 
 class Purchase(models.Model):

@@ -84,4 +84,42 @@ $(document).ready(function() {
         $(counterId).addClass('active-counter').text(counter);
     });
 
+
+    $('.bid-btn').on('click', function(){
+        var $this = $(this);
+        var $bidForm = $($this.context.previousElementSibling);
+        var bidAmount = $bidForm.val();
+        var auctionID = $bidForm.context.className.split(' ')[2].split('-')[2];
+        var $highestBid = $('.highest-bid-' + auctionID);
+        var highestBid = parseInt($highestBid.text().slice(1));
+
+        if (bidAmount && !isNaN(bidAmount) && bidAmount > highestBid) {
+
+            var data = { 'amount': bidAmount, 'id': auctionID };
+
+            $.ajax({
+                type: 'POST',
+                url: '/auction/new/bid/',
+                data: {
+                    csrfmiddlewaretoken: $.cookie('csrftoken'),
+                    data: JSON.stringify(data)
+                },
+                success: function (data) {
+                    var col1 = "<td>" + data['price'] + "</td>",
+                        col2 = "<td>" + data['username'] + "</td>",
+                        col3 = "<td>" + data['time'] + "</td>";
+                    var $tableBids = $('.current-bid-info-' + auctionID);
+
+                    console.log($tableBids);
+                    $tableBids.prepend("<tr>" + col1 + col2 + col3 + "</tr>");
+                    $highestBid.html(data['price']);
+                    console.log('success')
+                },
+                error: function (xhr, errmsg, err) {
+                    alert("error");
+                }
+            });
+        }
+    })
+
 });

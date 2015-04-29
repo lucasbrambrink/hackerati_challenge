@@ -28,29 +28,27 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
 }
-.container .auction-focus .auction-container table tr,
-.container .auction-focus .auction-container table td,
-.container .auction-focus .auction-container table th {
+.container .auction-focus .auction-container .auction-info table tr,
+.container .auction-focus .auction-container .auction-info table td,
+.container .auction-focus .auction-container .auction-info table th {
   border: none;
 }
-.container .auction-focus .auction-container table tr td:nth-child(1) {
+.container .auction-focus .auction-container .auction-info table tr td:nth-child(1) {
   text-align: right;
   width: 50%;
   border-right: 1px solid black;
 }
-.container .auction-focus .auction-container table tr td:nth-child(2) {
+.container .auction-focus .auction-container .auction-info table tr td:nth-child(2) {
   text-align: left;
 }
-.container .auction-focus .auction-container table tr:nth-child(2) td:nth-child(1) {
+.container .auction-focus .auction-container .auction-info table tr:nth-child(2) td:nth-child(1) {
   border-top: 1px solid black;
 }
-.container .auction-focus .auction-container table .place-new-bid-label {
-  margin: 0;
-  padding: 0;
+.container .auction-focus .auction-container .auction-info table .place-new-bid-label td:nth-child(1) {
+  padding-top: 13px;
 }
-.container .auction-focus .auction-container table input {
-  visibility: hidden;
-  position: fixed;
+.container .auction-focus .auction-container .auction-info table .place-new-bid-label td:nth-child(2) .input-group {
+  width: 70%;
 }
 .container .ongoing-auctions {
   height: 100%;
