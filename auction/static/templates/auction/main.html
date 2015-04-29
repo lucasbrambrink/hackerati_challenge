@@ -12,6 +12,12 @@
     </div>
 
     <div class="auction-focus col-md-6">
+        <div class="auction-container" style="visibility: visible;">
+            <h1 style="margin-top: 5em;">Welcome!<h1>
+            <h2>Please Enjoy Today's Auction</h2><br>
+            <h2>by Lucas Brambrink</h2>
+
+        </div>
         {% for auction in auctions %}
             <div class="auction-container" id="auction-{{ auction.id }}" data-seconds-left="{{ auction.seconds_until_expire }}">
                 <div class="auction" style='background-image: url({{ auction.item.image.url }})'></div>

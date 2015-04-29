@@ -150,7 +150,7 @@ class AutoPopulateThroughCraigslist(object):
                     price = text[1:]
                 else:
                     name_uninspected = text.split(' - ')[0]
-                    if len([x for x in name_uninspected if not x.isalpha()]) < 5:
+                    if name_uninspected and len([x for x in name_uninspected if not x.isalpha()]) < 5:
                         # if the title contains too many non-alphanumeric characters,
                         # it probably has annoying formatting and we can simply skip it
                         # since we don't have to be discerning here

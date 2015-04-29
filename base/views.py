@@ -18,27 +18,19 @@ class OnBoardingView(TemplateView):
         })
 
     def post(self, request, *args, **kwargs):
-        print(request)
         post = json.loads(request.POST['data'])
-        print (post)
 
-        if not len(post['name']):
-            name = self.faker.name()
-
-        if not len(post['username']):
-            username = fh.name_to_username(name)
-
-        if not len(post['password']):
-            password = "".join(self.faker.words())
+        name = post['name'] if len(post['name']) else self.faker.name()
+        username = post['username'] if len(post['username']) else fh.name_to_username(name)
+        password = post['password'] if len(post['password']) else "".join(self.faker.words())
 
         user = HackeratiUser(
-            name=name,
-            username=username
+            name=str(name),
+            username=str(username)
         )
-        user.set_password(raw_password=password)
+        user.set_password(raw_password=str(password))
         user.last_login = datetime.datetime.now()
         user.save()
-
 
         request.session['id'] = user.pk
         return JsonResponse({

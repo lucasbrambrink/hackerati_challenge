@@ -34,6 +34,7 @@ class InventoryItem(models.Model):
     description = models.TextField(null=True)
     reserved_price = models.DecimalField(decimal_places=2, max_digits=9)
     category = models.CharField(max_length=50, choices=CATEGORY_CHOICES, default=FURNITURE)
+    user = models.ForeignKey('base.HackeratiUser', related_name='item')
 
     @property
     def is_being_auctioned(self):
@@ -114,6 +115,7 @@ class InventoryItem(models.Model):
 
 class Auction(models.Model):
 
+    user = models.ForeignKey('base.HackeratiUser', related_name='auction')
     bid_log = models.TextField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     hours_duration = models.IntegerField()

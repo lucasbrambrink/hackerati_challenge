@@ -45,12 +45,34 @@ function decrementCounter(counter) {
         minutes = 59;
     }
     if (hours < 0) {
-        console.log("AUCTION OVER")
+        return false;
     }
     var minutesStr = minutes.toString().length == 1 ? "0" + minutes : minutes;
     var secondsStr = seconds.toString().length == 1 ? "0" + seconds : seconds;
 
     return hours + " : " + minutesStr + " : " + secondsStr;
+}
+
+function signalEnd(id) {
+
+    var data = {'id': id};
+
+    $.ajax({
+        type: 'POST',
+        url: '/auction/is/over/',
+        data: {
+            csrfmiddlewaretoken: $.cookie('csrftoken'),
+            data: JSON.stringify(data)
+        },
+        success: function (data) {
+            console.log('success');
+            $('#auction-' + id).remove();
+        },
+        error: function (xhr, errmsg, err) {
+            alert("error");
+        }
+    });
+
 }
 
 function changeEachVisibility(elem, visibility) {
@@ -69,7 +91,14 @@ $(document).ready(function() {
 
     setInterval( function() {
         var $active = $('.active-counter');
-        $active.html(decrementCounter($active.text()));
+        var result = decrementCounter($active.text());
+        if (!result) {
+            var auctionId = $active.attr('id').split('-')[2];
+            signalEnd(auctionId);
+        } else {
+            $active.html(decrementCounter($active.text()));
+        }
+
     }, 1000);
 
     $('.auction-item').hover(function(){
