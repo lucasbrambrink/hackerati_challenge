@@ -152,8 +152,12 @@ class Auction(models.Model):
         return self.created_at + datetime.timedelta(hours=self.hours_duration)
 
     @property
+    def seconds_until_expire(self):
+        return round((self.ending_datetime - datetime.datetime.now(datetime.timezone.utc)).total_seconds())
+
+    @property
     def is_active(self):
-        return self.ending_datetime < datetime.datetime.now(datetime.timezone.utc)
+        return self.ending_datetime > datetime.datetime.now(datetime.timezone.utc)
 
     @property
     def number_of_seconds_left(self):
