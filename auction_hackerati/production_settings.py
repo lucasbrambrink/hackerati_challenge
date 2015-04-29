@@ -11,6 +11,12 @@ from os.path import (dirname, basename)
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ALLOWED_HOSTS = ['*']
 
+
+# Email Config
+EMAIL_PORT = os.environ['EMAIL_PORT']
+EMAIL_HOST_USER = os.environ['EMAIL_HOST_USER']
+EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
+
 ###---< Database >---###
 import dj_database_url
 

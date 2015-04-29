@@ -55,6 +55,11 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
+###---< Email Config >---###
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+
 
 ###---< Static files >---###
 STATIC_URL = '/static/'
