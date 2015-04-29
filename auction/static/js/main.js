@@ -23,7 +23,6 @@ function counterTimeLeft(secondsLeft){
 function createDateObject(totalSecondsLeft) {
     secondsSinceLoaded = $("#seconds-since-loaded").text();
     counter = counterTimeLeft(totalSecondsLeft - secondsSinceLoaded);
-    console.log(counter);
     return counter;
 }
 
@@ -84,9 +83,5 @@ $(document).ready(function() {
         $auction.css('visibility', 'visible');
         $(counterId).addClass('active-counter').text(counter);
     });
-
-
-
-
 
 });

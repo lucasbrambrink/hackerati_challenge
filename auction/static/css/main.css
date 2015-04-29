@@ -14,6 +14,7 @@
 .container .auction-focus .auction-container {
   position: absolute;
   visibility: hidden;
+  width: 600px;
 }
 .container .auction-focus .auction-container .auction {
   height: 300px;
