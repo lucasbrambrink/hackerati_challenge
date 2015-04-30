@@ -39,7 +39,7 @@ class ImportHandler(object):
             number_of_items = self.MAX_ITEMS
 
         count_before = InventoryItem.objects.count()
-        fieldnames = ['image_path', 'name', 'price']
+        fieldnames = ['image_path_local', 'image_path_production', 'name', 'price']
         path = os.path.join(settings.MEDIA_ROOT, 'inventory_data.csv')
         with open(path, mode='r') as inventory_data:
             reader = csv.DictReader(inventory_data, fieldnames=fieldnames)
@@ -56,7 +56,7 @@ class ImportHandler(object):
 
                 item = InventoryItem(
                     user_id=self.user_id,
-                    image_path=line['image_path'],
+                    image_path=line['image_path_local'] if not settings.DEBUG else line['image_path_production'],
                     name=name,
                     reserved_price=line['price']
                 )
@@ -174,13 +174,19 @@ class AutoPopulateThroughCraigslist(object):
         Writes all InventoryItems to CSV file with image file specified
         """
         data = InventoryItem.objects.all()
-        fieldnames = ['image_path', 'name', 'price']
+        fieldnames = ['image_path_local', 'image_path_production', 'name', 'price']
         file_path = os.path.join(settings.PROJECT_DIR, 'base', 'static', settings.MEDIA_ROOT, 'inventory_data.csv')
         with open(file_path, mode='w') as inventory:
             writer = csv.DictWriter(inventory, fieldnames=fieldnames, delimiter=',')
             for item in data:
+
+                # build proper production file path to find it
+                file_name = item.image.path.split('/')[-1]
+                file_path_production = os.path.join('/app', 'base', 'root', 'media', file_name)
+
                 writer.writerow({
-                    'image_path': item.image.path,
+                    'image_path_local': item.image.path,
+                    'image_path_production': file_path_production,
                     'name': item.name,
                     'price': item.reserved_price
                 })
