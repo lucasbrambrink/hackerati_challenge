@@ -33,7 +33,7 @@ STATICFILES_DIRS = (
 )
 # Absolute filesystem path to the top-level project folder:
 SITE_ROOT = dirname(PROJECT_DIR)
-STATIC_ROOT = os.path.join(PROJECT_DIR, 'base', 'static')
+STATIC_ROOT = os.path.join(PROJECT_DIR, 'base', 'root')
 
 # Site name:
 SITE_NAME = basename(PROJECT_DIR)
