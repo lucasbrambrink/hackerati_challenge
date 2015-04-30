@@ -1,7 +1,8 @@
 import os
-
 import redis
 from rq import Worker, Queue, Connection
+
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "auction_hackerati.settings")
 
 listen = ['high', 'default', 'low']
 
