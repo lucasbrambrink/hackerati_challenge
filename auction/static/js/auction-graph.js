@@ -30,6 +30,7 @@ function auctionData(canvas_id, dataAuctions, dataInventory) {
     };
 
     var canvas = document.getElementById(canvas_id).getContext("2d");
-    new Chart(canvas).Bar(data, {
+    var barChart = new Chart(canvas).Bar(data, {
     });
+
 }

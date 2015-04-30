@@ -162,10 +162,12 @@ class ItemView(View):
             import_type = post['import_type']
             query = post['query']
             query = query if len(query) else 'furniture'
-
-            q = Queue(connection=conn)
-            q.enqueue(perform_sync_from_craigslist, user.id)
-            # success = auction_initiator.perform_sync_from_craigslist(query, 10)
+            if not settings.DEBUG:
+                q = Queue(connection=conn)
+                q.enqueue(perform_sync_from_craigslist, user.id)
+                success = True
+            else:
+                success = auction_initiator.perform_sync_from_craigslist(query, 10)
 
             return JsonResponse({
                 'success': success

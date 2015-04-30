@@ -29,7 +29,7 @@ $(document).ready(function() {
         var counterId = "#auction-counter-" + auctionID;
 
         changeEachVisibility('.auction-container', 'hidden');
-        $('#graph-container').css('display', 'none').css('visibility', 'hidden');
+        $('#chart-container').css('display', 'none').css('visibility', 'hidden');
 
         $('.inventory-container').css('display', 'none');
         $('.counter-cell').each(function() {

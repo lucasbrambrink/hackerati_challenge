@@ -6,16 +6,16 @@ from time import sleep
 class ImportHandler(object):
 
     def __init__(self, user_id=1):
-        self.user_id = int(user_id)
+        self.user_id = int(user_id) if type(user_id) is int or len(user_id) else 1
 
 
     def master_init_all_items(self):
         for item in InventoryItem.objects.all():
             if not item.is_being_auctioned:
-                sleep(random.randint(15, 75))
+                # sleep(random.randint(15, 75))
                 if not item.is_sold:
                     new_auction = Auction(
-                        user_id=self.user,
+                        user_id=self.user_id,
                         hours_duration=random.randint(12, 24),
                         item=item,
                     )
@@ -23,21 +23,15 @@ class ImportHandler(object):
 
     def initiate_auction_from_all_items(self, duration=1):
         try:
-            print('user_id', self.user_id)
+            duration = 1 if not len(duration) else int(duration)
             for item in InventoryItem.objects.filter(user_id=self.user_id):
-                print('stage1', item.name)
-                print(item.is_being_auctioned)
                 if not item.is_being_auctioned:
-                    print('stage2', item.name)
-                    if not item.is_sold:
-                        print('stage3',item)
-                        print ('new auction')
-                        new_auction = Auction(
-                            user_id=self.user_id,
-                            hours_duration=duration,
-                            item=item,
-                        )
-                        new_auction.save()
+                    new_auction = Auction(
+                        user_id=self.user_id,
+                        hours_duration=duration,
+                        item=item,
+                    )
+                    new_auction.save()
             return True
         except:
             return False
