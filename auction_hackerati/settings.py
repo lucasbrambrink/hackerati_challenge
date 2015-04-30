@@ -14,7 +14,10 @@ DEBUG = True if '192.168' in hostname else False
 
 TEMPLATE_DEBUG = DEBUG
 
-PROJECT_DIR = os.path.dirname(os.path.dirname(__file__))
+if DEBUG:  # not-production
+    PROJECT_DIR = os.path.dirname(os.path.dirname(__file__))
+else:  # production-settings
+    PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 ADMINS = (
     ('Lucas', 'lbrambrink@gmail.com'),
