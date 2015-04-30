@@ -120,6 +120,11 @@ class InventoryItem(models.Model):
             self.save()
 
 
+    @property
+    def image_file_name(self):
+        return self.image.path.split('/')[-1]
+
+
     @staticmethod
     def remove_same_name(name):
         """
