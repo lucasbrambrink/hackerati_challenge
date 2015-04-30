@@ -41,6 +41,7 @@ function AJAXimportItemsFromCraigslist(import_type, query) {
         success: function (data) {
             console.log('success');
             $('.loading-div').css('visibility', 'hidden');
+            location.reload();
         },
         error: function (xhr, errmsg, err) {
             alert("error");

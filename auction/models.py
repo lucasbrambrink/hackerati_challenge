@@ -43,7 +43,7 @@ class InventoryItem(models.Model):
 
     @property
     def is_being_auctioned(self):
-        return len(self.auction.all()) > 0
+        return self.auction.count() > 0
 
     @property
     def is_sold(self):

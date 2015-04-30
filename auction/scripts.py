@@ -6,7 +6,7 @@ from time import sleep
 class AuctionInitiator(object):
 
     def __init__(self, user_id=1):
-        self.user_id = user_id
+        self.user_id = int(user_id)
 
 
     def master_init_all_items(self):
@@ -23,9 +23,15 @@ class AuctionInitiator(object):
 
     def initiate_auction_from_all_items(self, duration=1):
         try:
+            print('user_id', self.user_id)
             for item in InventoryItem.objects.filter(user_id=self.user_id):
+                print('stage1', item.name)
+                print(item.is_being_auctioned)
                 if not item.is_being_auctioned:
+                    print('stage2', item.name)
                     if not item.is_sold:
+                        print('stage3',item)
+                        print ('new auction')
                         new_auction = Auction(
                             user_id=self.user_id,
                             hours_duration=duration,
