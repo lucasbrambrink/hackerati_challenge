@@ -239,7 +239,9 @@ class Auction(models.Model):
         pass
 
     def on_finish(self):
-        highest_bid = self.bids.order_by('-price')[0]
+        all_bids = self.bids.order_by('-price')
+        highest_bid = all_bids[0] if len(all_bids) else 0
+
         self.end_price = highest_bid
 
         if not self.was_successful:

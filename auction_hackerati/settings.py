@@ -74,7 +74,6 @@ MEDIA_ROOT = os.path.join(PROJECT_DIR, 'base', 'static', 'media')
 STATICFILES_DIRS = (
     ('base', os.path.join(PROJECT_DIR, 'base', 'static', 'bower_components')),
     ('auction', os.path.join(PROJECT_DIR, 'auction', 'static')),
-    ('images', os.path.join(PROJECT_DIR, 'base', 'root', 'media'))
 )
 
 TEMPLATE_DIRS = (
