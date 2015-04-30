@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 from .models import InventoryItem, Auction
 from base.models import HackeratiUser
 from time import sleep
+import pyimgur
 import os
 import requests
 import re
@@ -28,6 +29,14 @@ class ImportHandler(object):
 
     def __init__(self, user_id=None):
         self.user_id = int(user_id) if user_id and (type(user_id) is int or len(user_id)) else HackeratiUser.objects.first().id
+        self.ic = ImgurClient()
+
+    def upload_images_to_imgur(self):
+        for item in InventoryItem.objects.all():
+            link = self.ic.upload_to_imgur(item.image.path, item.name)
+            item.path = link
+            item.save()
+        return None
 
 
     def import_items_from_csv(self, number_of_items=None):
@@ -282,6 +291,29 @@ class AutoPopulateThroughCraigslist(object):
 
         return image_link, name, price
 
+class ImgurClient:
+    CLIENT_ID = "311f8bd011b0b50"
+
+    def __init__(self):
+        self.im = pyimgur.Imgur(self.CLIENT_ID)
+
+    def read_imgur(self, name):
+        """
+        :param name: ``str`` of imgur key
+        :return: ``pyimgur Imgur`` instance
+        """
+        image = self.im.get_image(name)
+        return image
+
+    def upload_to_imgur(self, path, title):
+        """
+        :param path: ``str`` to file path
+        :param title:  ``str`` to title uploaded image
+        :return link: ``str``
+        """
+        im = pyimgur.Imgur(self.CLIENT_ID)
+        uploaded_image = im.upload_image(path, title=title)
+        return uploaded_image.link
 
 
 if __name__ == "__main__":
