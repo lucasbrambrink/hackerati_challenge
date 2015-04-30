@@ -2,7 +2,7 @@ from django.conf import settings
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView, View
 from .models import InventoryItem, Auction, Bid
-from .scripts import ImportHandler
+from .scripts import ImportHandler, perform_sync_from_craigslist
 from base.models import HackeratiUser
 from base.utils import FormatHelper as fh
 from django.http import JsonResponse
@@ -164,7 +164,7 @@ class ItemView(View):
             query = query if len(query) else 'furniture'
 
             q = Queue(connection=conn)
-            q.enqueue(auction_initiator.perform_sync_from_craigslist, query)
+            q.enqueue(perform_sync_from_craigslist, user.id)
             # success = auction_initiator.perform_sync_from_craigslist(query, 10)
 
             return JsonResponse({

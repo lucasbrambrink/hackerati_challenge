@@ -49,3 +49,9 @@ class ImportHandler(object):
             return True
         except:
             return False
+
+
+def perform_sync_from_craigslist(user_id):
+    cl_sync = AutoPopulateThroughCraigslist(user_id, number_to_import=10)
+    cl_sync.run_global_import(query='furniture')
+    return True

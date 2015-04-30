@@ -57,32 +57,40 @@
                     </tbody>
                 </table>
             </div>
-            {% for item in user.item.all %}
-                <div class="inventory-item" id='inventory-{{ item.id }}'>
-                    <table class="table">
-                        <tbody>
-                            <tr>
-                                <td colspan="2">{{ item.shortened_name }}</td>
-                            </tr>
-                            <tr>
-                                <td>${{ item.reserved_price }}</td>
-                                <td>
-                                    <span data-item-id="{{ item.id }}" class="btns btn-remove glyphicon glyphicon-remove" aria-hidden="true"></span>
-                                    <span data-item-id="{{ item.id }}" class="btns btn-initiate-auction glyphicon glyphicon-plus" aria-hidden="true"></span>
-                                    {% if item.is_being_auctioned %}
-                                        <span class="btns btn-initiate-auction glyphicon glyphicon-ok" aria-hidden="true"></span>
-                                    {% endif %}
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <!--<h3>{{ item.shortened_name }}</h3>-->
-                    <!--<h3>-->
-                        <!--${{ item.reserved_price }}-->
-                    <!--</h3>-->
-                    <div class='item-image' style='background-image: url({{ item.image.url }})'></div>
+            {% if user.item.count == 0 %}
+                <div>
+                    <h3>Oops... Looks like you don't have any items yet!</h3>
+                    <h4>Import new items from craigslist.org</h4>
+                    <h4>via the "Fetch New Items" button on the left</h4>
                 </div>
-            {% endfor %}
+            {% else %}
+                {% for item in user.item.all %}
+                    <div class="inventory-item" id='inventory-{{ item.id }}'>
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <td colspan="2">{{ item.shortened_name }}</td>
+                                </tr>
+                                <tr>
+                                    <td>${{ item.reserved_price }}</td>
+                                    <td>
+                                        <span data-item-id="{{ item.id }}" class="btns btn-remove glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                        <span data-item-id="{{ item.id }}" class="btns btn-initiate-auction glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                        {% if item.is_being_auctioned %}
+                                            <span class="btns btn-initiate-auction glyphicon glyphicon-ok" aria-hidden="true"></span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <!--<h3>{{ item.shortened_name }}</h3>-->
+                        <!--<h3>-->
+                            <!--${{ item.reserved_price }}-->
+                        <!--</h3>-->
+                        <div class='item-image' style='background-image: url({{ item.image.url }})'></div>
+                    </div>
+                {% endfor %}
+            {% endif %}
         </div>
         {% for auction in auctions %}
             <div class="auction-container" id="auction-{{ auction.id }}" data-seconds-left="{{ auction.seconds_until_expire }}">
