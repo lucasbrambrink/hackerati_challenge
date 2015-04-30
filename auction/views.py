@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView, View
 from .models import InventoryItem, Auction, Bid
@@ -7,11 +8,12 @@ from base.utils import FormatHelper as fh
 from django.http import JsonResponse
 import json
 
-# Redis & Worker
-from rq import Queue
-from .worker import conn
+if not settings.DEBUG:
+    # Redis & Worker
+    from rq import Queue
+    from auction_hackerati.worker import conn
 
-q = Queue(connection=conn)
+    q = Queue(connection=conn)
 
 # Create your views here.
 

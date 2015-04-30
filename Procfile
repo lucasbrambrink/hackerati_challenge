@@ -1,2 +1,2 @@
 web: gunicorn auction_hackerati.wsgi --log-file -
-worker: python worker.py
+worker: python auction_hackerati.worker.py
