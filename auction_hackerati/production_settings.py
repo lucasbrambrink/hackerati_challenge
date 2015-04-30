@@ -9,6 +9,7 @@ SECRET_KEY = os.environ['SECRET_KEY']
 from os.path import (dirname, basename)
 
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = PROJECT_DIR
 ALLOWED_HOSTS = ['*']
 
 
