@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand, CommandError
-from auction.scripts import ImportHandler
+from auction.import_scripts import ImportHandler
 
 class Command(BaseCommand):
     help = 'Imports new items from craigslist'
