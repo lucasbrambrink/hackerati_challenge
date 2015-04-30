@@ -3,7 +3,7 @@ from .import_scripts import AutoPopulateThroughCraigslist
 import random
 from time import sleep
 
-class AuctionInitiator(object):
+class ImportHandler(object):
 
     def __init__(self, user_id=1):
         self.user_id = int(user_id)

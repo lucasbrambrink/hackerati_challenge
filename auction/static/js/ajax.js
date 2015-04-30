@@ -33,7 +33,7 @@ function AJAXimportItemsFromCraigslist(import_type, query) {
     $('.loading-div').css('visibility', 'visible');
     $.ajax({
         type: 'POST',
-        url: '/auction/auction/import/',
+        url: '/auction/item/import/',
         data: {
             csrfmiddlewaretoken: $.cookie('csrftoken'),
             data: JSON.stringify(data)

@@ -1,12 +1,17 @@
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView, View
 from .models import InventoryItem, Auction, Bid
-from .scripts import AuctionInitiator
+from .scripts import ImportHandler
 from base.models import HackeratiUser
 from base.utils import FormatHelper as fh
 from django.http import JsonResponse
 import json
 
+# Redis & Worker
+from rq import Queue
+from worker import conn
+
+q = Queue(connection=conn)
 
 # Create your views here.
 
@@ -80,7 +85,7 @@ class AuctionView(View):
 
 
         if action == 'create':
-            auction_initiator = AuctionInitiator(user_id=user.id)
+            auction_initiator = ImportHandler(user_id=user.id)
 
             create_type = post['type']
             duration = post['duration'] if 'duration' in post else 3
@@ -115,23 +120,9 @@ class AuctionView(View):
         elif action == 'delete':
             pass
 
-        elif action == 'import':
-            auction_initiator = AuctionInitiator(user_id=user.id)
-            import_type = post['import_type']
-
-            if import_type == 'query':
-                query = post['query']
-                query = query if len(query) else 'furniture'
-                success = auction_initiator.perform_sync_from_craigslist(query, 10)
-
-            if import_type == 'random':
-                success = auction_initiator.perform_random_sync_from_craigslist(10)
-
-            return JsonResponse({
-                'success': success
-            })
 
 
+###---< Uses Redis Queue to Handle Worker >---###
 class ItemView(View):
 
     def post(self, request, action=None, *args, **kwargs):
@@ -163,6 +154,21 @@ class ItemView(View):
                     user=user
                 )
                 new_auction.save()
+
+        elif action == 'import':
+            auction_initiator = ImportHandler(user_id=user.id)
+            import_type = post['import_type']
+            query = post['query']
+            query = query if len(query) else 'furniture'
+
+            q = Queue(connection=conn)
+            q.enqueue(auction_initiator.perform_sync_from_craigslist, query, 10)
+            # success = auction_initiator.perform_sync_from_craigslist(query, 10)
+
+            return JsonResponse({
+                'success': success
+            })
+
 
         return JsonResponse({
                 'success': success

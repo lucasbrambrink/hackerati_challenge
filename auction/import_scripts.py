@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup
 from .models import InventoryItem
 import requests
 import re
+import sys
 
 
 
@@ -158,4 +159,10 @@ class AutoPopulateThroughCraigslist(object):
 
 
 
+if __name__ == "__main__":
+    from django.core.management import setup_environ
+    from auction_hackerati import settings
+    setup_environ(settings)
 
+    user_id = sys.argv[1]
+    importer = AutoPopulateThroughCraigslist(user_id)
