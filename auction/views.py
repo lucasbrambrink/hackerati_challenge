@@ -152,7 +152,9 @@ class ItemView(View):
 
         elif action == 'init':
             item_id = post['item_id']
-            duration = post['duration'] if 'duration' in post else 1
+            duration = post['duration']
+            if not len(duration):
+                duration = 1
             item = InventoryItem.objects.get(id=int(item_id))
             if not item.is_being_auctioned:
                 new_auction = Auction(

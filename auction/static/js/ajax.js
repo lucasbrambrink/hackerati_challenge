@@ -59,7 +59,7 @@ function AJAXcreateNewAuction(type, duration) {
             csrfmiddlewaretoken: $.cookie('csrftoken'),
             data: JSON.stringify(data)
         },
-        success: function (data) {
+        success:     function (data) {
             console.log('success');
             location.reload();
         },
@@ -124,8 +124,8 @@ function AJAXremoveItem(itemID) {
 }
 
 function AJAXinitiateAuction(itemID, duration) {
-
     var data = {'item_id': itemID, 'duration': duration};
+    console.log(data)
 
     $.ajax({
         type: 'POST',
