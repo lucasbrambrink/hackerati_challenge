@@ -9,7 +9,7 @@ import json
 
 # Redis & Worker
 from rq import Queue
-from worker import conn
+from .worker import conn
 
 q = Queue(connection=conn)
 
