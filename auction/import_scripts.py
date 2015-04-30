@@ -48,7 +48,7 @@ class ImportHandler(object):
             number_of_items = self.MAX_ITEMS
 
         count_before = InventoryItem.objects.count()
-        fieldnames = ['image_path_local', 'image_path_production', 'name', 'price']
+        fieldnames = ['imgur_link', 'name', 'price']
         path = os.path.join(settings.MEDIA_ROOT, 'inventory_data.csv')
         with open(path, mode='r') as inventory_data:
             reader = csv.DictReader(inventory_data, fieldnames=fieldnames)
@@ -65,7 +65,7 @@ class ImportHandler(object):
 
                 item = InventoryItem(
                     user_id=self.user_id,
-                    image_path=line['image_path_local'] if settings.DEBUG else line['image_path_production'],
+                    image_path=line['imgur_link'],
                     name=name,
                     reserved_price=line['price']
                 )
@@ -134,6 +134,7 @@ class AutoPopulateThroughCraigslist(object):
         self.number_to_import = number_to_import
         self.min_price = min_price
         self.max_price = max_price
+        self.ic = ImgurClient()
 
 
     ###---< Global Scrape Craigslist & Import to DB directly >---###
@@ -166,6 +167,11 @@ class AutoPopulateThroughCraigslist(object):
             if new_inventory.upload_image_from_url():
                 new_inventory.save()
 
+            link = self.ic.upload_to_imgur(new_inventory.image.path, new_inventory.name)
+            new_inventory.image_path = link
+            new_inventory.save()
+
+
         if write_to_csv:
             self.write_to_csv()
 
@@ -183,19 +189,14 @@ class AutoPopulateThroughCraigslist(object):
         Writes all InventoryItems to CSV file with image file specified
         """
         data = InventoryItem.objects.all()
-        fieldnames = ['image_path_local', 'image_path_production', 'name', 'price']
+        fieldnames = ['imgur_link', 'name', 'price']
         file_path = os.path.join(settings.PROJECT_DIR, 'base', 'static', settings.MEDIA_ROOT, 'inventory_data.csv')
         with open(file_path, mode='w') as inventory:
             writer = csv.DictWriter(inventory, fieldnames=fieldnames, delimiter=',')
             for item in data:
 
-                # build proper production file path to find it
-                file_name = item.image.path.split('/')[-1]
-                file_path_production = os.path.join('/app', 'base', 'root', 'media', file_name)
-
                 writer.writerow({
-                    'image_path_local': item.image.path,
-                    'image_path_production': file_path_production,
+                    'imgur_link': item.image_path,
                     'name': item.name,
                     'price': item.reserved_price
                 })
