@@ -1,0 +1,98 @@
+body {
+  background: rgb(249, 228, 182);
+}
+
+.container { font-family: 'Lato', sans-serif; height: 90%;
+  .col-md-6 { padding: 0;}
+  .header {
+    h1 { border-bottom: 1px solid black; margin-bottom: 0; text-align: center;}
+  }
+
+  .auction-focus { display: block; text-align: center; height: 100%; border-left: 1px solid black; overflow: scroll; margin-left: 0; margin-right: 0;
+    #chart-container { height: 560px; width: 560px; display: none; }
+
+    .auction-container { position: absolute; visibility: hidden; width: 560px;
+      .auction { height: 300px; width: 300px; margin-left: auto; margin-right: auto; margin-top: 3em; background-repeat: no-repeat; background-size: cover; }
+      .auction-info {
+        table {
+          tr, td, th { border: none; }
+          tr {
+            td:nth-child(1) { text-align: right; width: 50%; border-right: 1px solid black; }
+            td:nth-child(2) { text-align: left; }
+          }
+
+          tr:nth-child(2) {
+            td:nth-child(1) { border-top: 1px solid black;}
+          }
+          .place-new-bid-label {
+            td:nth-child(1) { padding-top: 13px; }
+            td:nth-child(2) {
+              .input-group { width: 70%;
+              }
+            }
+          }
+        }
+      }
+      .bid-information-table { margin-top: -20px;
+        table { text-align: center;
+          tr:nth-child(1) {
+            td { border-top: 1px solid black;}
+          }
+          td { border: none;}
+          td:nth-child(1) { border-right: 1px solid black;}
+          td:nth-child(2) { border-right: 1px solid black;}
+          tr:last-child {
+            td { border-bottom: 1px solid black; }
+          }
+        }
+      }
+    }
+
+
+    .inventory-container {
+      .header {
+        table { font-size: 90%;
+          tr, td, th { border: none; }
+          tr {
+            td:nth-child(1) { text-align: right; width: 35%; border-right: 1px solid black; }
+            td:nth-child(2) { text-align: left; }
+          }
+        }
+      }
+      .inventory-item { margin-top: 8px; border-top: 2px solid black; width: 50%; height: 200px; float: left; text-align: center; border-right: 1px solid white;
+         table { margin: 0; color: white; visibility: visible; font-size: 115%; width: 100%; background-color: black;
+           tr, td { margin: 0; padding: 0;}
+           td { border: none; text-align: center; }
+           .btns { margin-left: 5px; }
+           .btns:nth-child(1) {margin-left: 0px;}
+           tr:nth-child(1) {
+             td:nth-child(1) { border-bottom: 1px solid white;}
+           }
+         }
+         .item-image { width: 100%; height: 90%; }
+      }
+    }
+  }
+
+  .ongoing-auctions { height: 100%; border-left: 1px solid black; overflow: auto; padding: 0; text-align: center;
+    .filter { height: 60px;
+    }
+    .auction-item { margin-top: 8px; border-top: 2px solid black; width: 100%; height: 150px; float: left; text-align: center;
+        h3 { margin: 0; color: black; visibility: visible; font-size: 115%; width: 100%; background-color: black; color: white; }
+        .item-image { width: 100%; height: 95%; }
+    }
+  }
+
+  .control-panel { height: 100%; border-left: 1px solid;
+    .action-container { margin-left: 1em; margin-right: 1em; margin-top: 4em; text-align: center;
+      table {
+        td { border: none; }
+        td:nth-child(1) { text-align: right; }
+        td:nth-child(2) { text-align: left; }
+      }
+      div { margin-bottom: 1em; display: block;}
+      input { text-align: center; }
+      .loading-div { visibility: hidden; margin-top: 2em;}
+    }
+  }
+}

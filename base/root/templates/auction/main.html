@@ -1,0 +1,167 @@
+{% extends 'base/base.html' %}
+{% load staticfiles %}
+
+{% block stylesheets %}
+        <link rel="stylesheet" type="text/css" href="{% static 'auction/css/main.css' %}" />
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="header">
+        <h1>Hosting Craigslist Items for the First Annual Hackerati Auction</h1>
+    </div>
+
+
+    <div class="control-panel col-md-3">
+        <div class="action-container">
+            <h4>{{ user.name }}</h4>
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <td>Balance :</td>
+                        <td id="user-balance">${{ user.balance }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="actions btn btn-default" id="view-inventory">View Inventory</div>
+            <div class="actions btn btn-default" id="view-graph">View Auction Statistics</div>
+            <input type="text" id='query-term' class="form-control" placeholder="Search Term, e.g. furniture" name="query">
+            <div class="actions btn btn-default" id="query-fetch">Fetch New Items from CL</div>
+            <input type="text" id='auction-duration' class="form-control" placeholder="Auction Duration [default 1hr]" name="duration">
+            <div class="actions btn btn-default" id="auction-all">Auction all Inventory</div>
+
+            <div class="loading-div"><h4>...Loading...</h4></div>
+        </div>
+    </div>
+
+    <div class="auction-focus col-md-6">
+        <canvas id="chart-container"></canvas>
+
+        <div class="inventory-container">
+            <div class="header">
+                <h3>Inventory  : {{ user.name }}</h3>
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <td><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></td>
+                            <td>Indicates the Item is being auctioned</td>
+                        </tr>
+                        <tr>
+                            <td><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></td>
+                            <td>Offers the Item up for auction</td>
+                        </tr>
+                        <tr>
+                            <td><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></td>
+                            <td>Removes the Item from Inventory & Auction</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            {% for item in user.item.all %}
+                <div class="inventory-item" id='inventory-{{ item.id }}'>
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <td colspan="2">{{ item.shortened_name }}</td>
+                            </tr>
+                            <tr>
+                                <td>${{ item.reserved_price }}</td>
+                                <td>
+                                    <span data-item-id="{{ item.id }}" class="btns btn-remove glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                    <span data-item-id="{{ item.id }}" class="btns btn-initiate-auction glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                    {% if item.is_being_auctioned %}
+                                        <span class="btns btn-initiate-auction glyphicon glyphicon-ok" aria-hidden="true"></span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <!--<h3>{{ item.shortened_name }}</h3>-->
+                    <!--<h3>-->
+                        <!--${{ item.reserved_price }}-->
+                    <!--</h3>-->
+                    <div class='item-image' style='background-image: url({{ item.image.url }})'></div>
+                </div>
+            {% endfor %}
+        </div>
+        {% for auction in auctions %}
+            <div class="auction-container" id="auction-{{ auction.id }}" data-seconds-left="{{ auction.seconds_until_expire }}">
+                <div class="auction" style='background-image: url({{ auction.item.image.url }})'></div>
+                <div class="auction-info">
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <th colspan="2" style="text-align: center;">
+                                    <h3>{{ auction.item.name }}</h3>
+                                </th>
+                            </tr>
+                            <tr>
+                                <td>Asking Price</td>
+                                <td>${{ auction.item.reserved_price }}</td>
+                            </tr>
+                            <tr>
+                                <td>Current Highest Bid</td>
+                                <td class="highest-bid-{{ auction.id }}">${{ auction.current_highest_bid }}</td>
+                            </tr>
+                            <tr>
+                                <td>Time Left in Auction</td>
+                                <td class='counter-cell' id="auction-counter-{{ auction.id }}" data-seconds-left="{{ auction.seconds_until_expire }}"></td>
+                            </tr>
+                            <tr class="place-new-bid-label">
+                                <td>Place New Bid</td>
+                                <td>
+                                    <div class="input-group">
+                                      <span class="input-group-addon">$</span>
+                                      <input type="text" class="form-control bid-form bid-form-{{ auction.id }}" placeholder="bid price" name="bid-amount">
+                                      <span class="bid-btn-{{ auction.id }} input-group-addon btn btn-primary bid-btn">Bid
+                                      </span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="bid-information-table">
+                    <table class="table">
+                        <tbody class="current-bid-info-{{ auction.id }}">
+                            {% for bid in auction.bids.all %}
+                                <tr>
+                                    <td>${{ bid.price }}</td>
+                                    <td>{{ bid.user.username }}</td>
+                                    <td>{{ bid.created_at }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="ongoing-auctions col-md-3">
+        <h4>Active Auctions</h4>
+        <div class="filter">
+            <p>Filter by Price, Expiration, Category</p>
+            <p>( Not Yet Implemented )</p>
+        </div>
+        {% for auction in auctions %}
+            <div class="auction-item" id='auction-thumb-{{ auction.id }}'>
+                <h3>{{ auction.item.shortened_name }} : ${{ auction.item.reserved_price }}</h3>
+                <div class='item-image' style='background-image: url({{ auction.item.image.url }})'></div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div id="seconds-since-loaded" style="visibility: hidden"></div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript" src="{% static 'auction/js/main.js' %}"></script>
+    <script type="text/javascript" src="{% static 'auction/js/helperFunctions.js' %}"></script>
+    <script type="text/javascript" src="{% static 'auction/js/ajax.js' %}"></script>
+    <script type="text/javascript" src="{% static 'auction/js/auction-graph.js' %}"></script>
+
+
+{% endblock %}
