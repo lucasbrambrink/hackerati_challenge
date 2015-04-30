@@ -522,12 +522,17 @@ var PageTransitions = (function () {
             index++
         });
 
+        var csrf_token = $.cookie('csrftoken');
+        if (!csrf_token || csrf_token.length == 0){
+            csrf_token = $('#csrf-token').text();
+        }
+
         $.ajax({
             type: 'POST',
             url: '/on-boarding/create/new/user/',
             data: {
                 csrfmiddlewaretoken: $.cookie('csrftoken'),
-                data: JSON.stringify(data),
+                data: JSON.stringify(data)
             },
             success: function (data) {
                 var userData = data['user_data'];
