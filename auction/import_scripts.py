@@ -25,7 +25,7 @@ class ImportHandler(object):
     """
     Handles DB Import from
     """
-    MAX_ITEMS = 10
+    MAX_ITEMS = 5
 
     def __init__(self, user_id=None):
         self.user_id = int(user_id) if user_id and (type(user_id) is int or len(user_id)) else HackeratiUser.objects.first().id

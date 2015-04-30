@@ -8,6 +8,7 @@ from base.models import HackeratiUser
 from base.utils import FormatHelper as fh
 from django.http import JsonResponse
 import json
+from faker import Faker
 
 if not settings.DEBUG:
     # Redis & Worker
@@ -23,6 +24,16 @@ class AuctionTemplateView(TemplateView):
         user_id = request.session.get('id')
         if user_id:
             user = HackeratiUser.objects.get(id=int(user_id))
+
+        if not user:
+            faker = Faker()
+            name = faker.name()
+            user = HackeratiUser(
+                name=name,
+                username=fh.name_to_username(name),
+                password="".join(self.faker.words())
+            )
+            user.save()
 
         # cannot filter by properties
         active_auction = [auction for auction in Auction.objects.all() if auction.is_active]
