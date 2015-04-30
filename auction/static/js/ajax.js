@@ -7,6 +7,10 @@ function AJAXsignalEnd(auctionID) {
 
     var data = {'auction_id': auctionID };
 
+    var csrf_token = $.cookie('csrftoken');
+    if (!csrf_token || csrf_token.length == 0){
+        csrf_token = $('#csrf-token').text();
+    }
     $.ajax({
         type: 'POST',
         url: '/auction/auction/ending/',
@@ -29,7 +33,10 @@ function AJAXsignalEnd(auctionID) {
 function AJAXimportItemsFromCraigslist(import_type, query) {
 
     var data = {'import_type': import_type, 'query': query};
-
+    var csrf_token = $.cookie('csrftoken');
+    if (!csrf_token || csrf_token.length == 0){
+        csrf_token = $('#csrf-token').text();
+    }
     $('.loading-div').css('visibility', 'visible');
     $.ajax({
         type: 'POST',
@@ -52,7 +59,10 @@ function AJAXimportItemsFromCraigslist(import_type, query) {
 function AJAXcreateNewAuction(type, duration) {
 
     var data = {'type': type, 'duration': duration};
-
+    var csrf_token = $.cookie('csrftoken');
+    if (!csrf_token || csrf_token.length == 0){
+        csrf_token = $('#csrf-token').text();
+    }
     $.ajax({
         type: 'POST',
         url: '/auction/auction/create/',
@@ -74,7 +84,10 @@ function AJAXcreateNewAuction(type, duration) {
 
 function AJAXcreateBid($highestBid, bidAmount, auctionID) {
     var data = { 'amount': bidAmount, 'id': auctionID };
-
+    var csrf_token = $.cookie('csrftoken');
+    if (!csrf_token || csrf_token.length == 0){
+        csrf_token = $('#csrf-token').text();
+    }
     $.ajax({
         type: 'POST',
         url: '/auction/bid/create/',
@@ -104,6 +117,10 @@ function AJAXcreateBid($highestBid, bidAmount, auctionID) {
 function AJAXremoveItem(itemID) {
 
     var data = {'item_id': itemID};
+    var csrf_token = $.cookie('csrftoken');
+    if (!csrf_token || csrf_token.length == 0){
+        csrf_token = $('#csrf-token').text();
+    }
     console.log(data)
     $.ajax({
         type: 'POST',
@@ -127,7 +144,10 @@ function AJAXremoveItem(itemID) {
 function AJAXinitiateAuction(itemID, duration) {
     var data = {'item_id': itemID, 'duration': duration};
     console.log(data)
-
+    var csrf_token = $.cookie('csrftoken');
+    if (!csrf_token || csrf_token.length == 0){
+        csrf_token = $('#csrf-token').text();
+    }
     $.ajax({
         type: 'POST',
         url: '/auction/item/init/',

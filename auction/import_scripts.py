@@ -142,7 +142,7 @@ class AutoPopulateThroughCraigslist(object):
         :param query: ``str`` to scrape results page for
         :return: ``bool`` indicating whether new objects were imported
         """
-        soup = self.fetch_craigslist_page(filters={'min': self.min_price}, query=self.query)
+        soup = self.fetch_craigslist_page(filters={'min': self.min_price}, query=query)
         new_inventory_data = self.visit_each_posting(soup, num=self.number_to_import)
         if not len(new_inventory_data):
             return False

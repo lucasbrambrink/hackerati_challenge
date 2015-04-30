@@ -531,7 +531,7 @@ var PageTransitions = (function () {
             type: 'POST',
             url: '/on-boarding/create/new/user/',
             data: {
-                csrfmiddlewaretoken: $.cookie('csrftoken'),
+                csrfmiddlewaretoken: csrf_token,
                 data: JSON.stringify(data)
             },
             success: function (data) {
