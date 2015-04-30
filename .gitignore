@@ -1,6 +1,7 @@
 ## Local Files to be Ignored
 local_settings.py
 heroku_keys.sh
+root
 
 # virtualenv
 bin/
