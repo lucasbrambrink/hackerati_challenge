@@ -122,7 +122,7 @@ class InventoryItem(models.Model):
 
     @property
     def image_file_name(self):
-        return self.image.path.split('/')[-1]
+        return 'images/media/' + self.image.path.split('/')[-1]
 
 
     @staticmethod
