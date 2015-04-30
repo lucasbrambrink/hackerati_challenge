@@ -69,7 +69,6 @@ class ImportHandler(object):
                     name=name,
                     reserved_price=line['price']
                 )
-                item.upload_image_from_path()
                 item.save()
 
 
