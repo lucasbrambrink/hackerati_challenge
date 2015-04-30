@@ -164,7 +164,7 @@ class ItemView(View):
             query = query if len(query) else 'furniture'
 
             q = Queue(connection=conn)
-            q.enqueue(auction_initiator.perform_sync_from_craigslist, query, 10)
+            q.enqueue(auction_initiator.perform_sync_from_craigslist, query)
             # success = auction_initiator.perform_sync_from_craigslist(query, 10)
 
             return JsonResponse({
