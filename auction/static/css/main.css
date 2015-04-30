@@ -27,6 +27,10 @@ body {
   width: 560px;
   display: none;
 }
+.container .auction-focus .chart-container-div {
+  display: none;
+  visibility: hidden;
+}
 .container .auction-focus .auction-container {
   position: absolute;
   visibility: hidden;
