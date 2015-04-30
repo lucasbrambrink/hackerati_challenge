@@ -1,8 +1,9 @@
 from django.conf import settings
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView, View
+from django.template import RequestContext
 from .models import InventoryItem, Auction, Bid
-from .scripts import ImportHandler, perform_sync_from_craigslist
+from .import_scripts import ImportHandler, sync_new_items_from_csv
 from base.models import HackeratiUser
 from base.utils import FormatHelper as fh
 from django.http import JsonResponse
@@ -12,10 +13,8 @@ if not settings.DEBUG:
     # Redis & Worker
     from rq import Queue
     from auction_hackerati.worker import conn
-
     q = Queue(connection=conn)
 
-# Create your views here.
 
 class AuctionTemplateView(TemplateView):
     template_name = 'auction/main.html'
@@ -31,7 +30,7 @@ class AuctionTemplateView(TemplateView):
         return render(request, self.template_name, {
             'user': user,
             'auctions': active_auction,
-        })
+        }, RequestContext(request))
 
 
 ###---< Bid CRUD >---###
@@ -127,12 +126,51 @@ class AuctionView(View):
 ###---< Uses Redis Queue to Handle Worker >---###
 class ItemView(View):
 
+    def delete(self, user, post):
+        item_id = post['item_id']
+        item = InventoryItem.objects.get(id=int(item_id))
+        for auction in item.auction.all():
+            auction.delete()
+        item.delete()
+        return True
+
+    def initialize_new_auction(self, user, post):
+        item_id = post['item_id']
+        duration = post['duration']
+        if not len(duration):
+            duration = 1
+        item = InventoryItem.objects.get(id=int(item_id))
+        if not item.is_being_auctioned:
+            new_auction = Auction(
+                hours_duration=duration,
+                item_id=int(item_id),
+                user=user
+            )
+            new_auction.save()
+        return True
+
+    def import_new_items(self, user, post):
+        query = post['query']
+        if not len(query):
+            query = 'furniture'
+
+        if not settings.DEBUG:
+            q = Queue(connection=conn)
+            q.enqueue(sync_new_items_from_csv, user.id)
+            success = True
+
+        else:
+            success = ImportHandler.import_items_from_csv(number_of_items=10)
+
+        return JsonResponse({
+            'success': success
+        })
+
     def post(self, request, action=None, *args, **kwargs):
         user_id = request.session.get('id')
         if user_id:
             user = HackeratiUser.objects.get(id=int(user_id))
         post = json.loads(request.POST['data'])
-        print(post)
         success = False
 
         if action == 'delete':
@@ -164,7 +202,7 @@ class ItemView(View):
             query = query if len(query) else 'furniture'
             if not settings.DEBUG:
                 q = Queue(connection=conn)
-                q.enqueue(perform_sync_from_craigslist, user.id)
+                q.enqueue(sync_new_items_from_csv, user.id)
                 success = True
             else:
                 success = auction_initiator.perform_sync_from_craigslist(query, 10)

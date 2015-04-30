@@ -2,8 +2,8 @@
 from __future__ import unicode_literals
 
 from django.db import models, migrations
-from django.conf import settings
 import django.contrib.auth.models
+from django.conf import settings
 
 
 class Migration(migrations.Migration):
@@ -16,15 +16,15 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='HackeratiUser',
             fields=[
-                ('user_ptr', models.OneToOneField(primary_key=True, serialize=False, auto_created=True, parent_link=True, to=settings.AUTH_USER_MODEL)),
+                ('user_ptr', models.OneToOneField(to=settings.AUTH_USER_MODEL, parent_link=True, auto_created=True, serialize=False, primary_key=True)),
                 ('name', models.CharField(max_length=50)),
-                ('balance', models.DecimalField(max_digits=9, default=1000.0, decimal_places=2)),
+                ('balance', models.DecimalField(decimal_places=2, max_digits=9, default=1000.0)),
                 ('is_seller', models.BooleanField(default=False)),
             ],
             options={
-                'verbose_name_plural': 'users',
-                'verbose_name': 'user',
                 'abstract': False,
+                'verbose_name': 'user',
+                'verbose_name_plural': 'users',
             },
             bases=('auth.user',),
             managers=[
@@ -34,12 +34,12 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Auctioneer',
             fields=[
-                ('hackeratiuser_ptr', models.OneToOneField(primary_key=True, serialize=False, auto_created=True, parent_link=True, to='base.HackeratiUser')),
+                ('hackeratiuser_ptr', models.OneToOneField(to='base.HackeratiUser', parent_link=True, auto_created=True, serialize=False, primary_key=True)),
             ],
             options={
-                'verbose_name_plural': 'users',
-                'verbose_name': 'user',
                 'abstract': False,
+                'verbose_name': 'user',
+                'verbose_name_plural': 'users',
             },
             bases=('base.hackeratiuser',),
             managers=[

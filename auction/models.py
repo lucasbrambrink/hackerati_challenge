@@ -1,5 +1,5 @@
 from django.db import models
-from django.db.models import ImageField
+from django.core.files import File
 from base.utils import FormatHelper as fh
 from base.models import HackeratiUser
 from django.db.models.signals import pre_save, post_delete
@@ -31,6 +31,7 @@ class InventoryItem(models.Model):
 
     image = models.ImageField(null=True)
     image_url = models.CharField(max_length=600, null=False, default='')
+    image_path = models.CharField(max_length=600, null=False, default='')
     name = models.CharField(max_length=50)
     description = models.TextField(null=True)
     reserved_price = models.DecimalField(decimal_places=2, max_digits=9)
@@ -103,6 +104,21 @@ class InventoryItem(models.Model):
         # print (StringIO(image_stream.content))
         return Image.open(BytesIO(image_stream.content))
 
+    def upload_image_from_path(self, path=None):
+        if not path:
+            path = self.image_path
+
+        with open(path, 'rb') as image_file:
+             # load into django
+            file_name = fh.pythonify("{name}_{id}.jpg".format(
+                name=self.name, price=self.reserved_price, id=self.pk
+            ))
+            django_file = InMemoryUploadedFile(image_file, None, path, 'image/jpeg', None, None)
+
+            # save
+            self.image.save(file_name, django_file, save=True)
+            self.save()
+
 
     @staticmethod
     def remove_same_name(name):
@@ -130,15 +146,15 @@ class InventoryItem(models.Model):
             formatted_bins.append(len(value))
         return formatted_bins
 
-
-@receiver(post_delete, sender=InventoryItem)
-def auto_delete_file_on_delete(sender, instance, *args, **kwargs):
-    """auto-delete image jps from filesystem
-    upon deleting the `InventoryItem` instance"""
-    if instance.image:
-        if os.path.isfile(instance.image.path):
-            os.remove(instance.image.path)
-
+#
+# @receiver(post_delete, sender=InventoryItem)
+# def auto_delete_file_on_delete(sender, instance, *args, **kwargs):
+#     """auto-delete image jps from filesystem
+#     upon deleting the `InventoryItem` instance"""
+#     if instance.image:
+#         if os.path.isfile(instance.image.path):
+#             os.remove(instance.image.path)
+#
 
 
 

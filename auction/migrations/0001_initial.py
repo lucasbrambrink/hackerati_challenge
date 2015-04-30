@@ -14,7 +14,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Auction',
             fields=[
-                ('id', models.AutoField(primary_key=True, auto_created=True, verbose_name='ID', serialize=False)),
+                ('id', models.AutoField(verbose_name='ID', auto_created=True, primary_key=True, serialize=False)),
                 ('bid_log', models.TextField(null=True)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('hours_duration', models.IntegerField()),
@@ -27,7 +27,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Bid',
             fields=[
-                ('id', models.AutoField(primary_key=True, auto_created=True, verbose_name='ID', serialize=False)),
+                ('id', models.AutoField(verbose_name='ID', auto_created=True, primary_key=True, serialize=False)),
                 ('price', models.DecimalField(max_digits=11, decimal_places=2)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('auction', models.ForeignKey(to='auction.Auction', related_name='bids')),
@@ -40,20 +40,21 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='InventoryItem',
             fields=[
-                ('id', models.AutoField(primary_key=True, auto_created=True, verbose_name='ID', serialize=False)),
-                ('image', models.ImageField(upload_to='', null=True)),
+                ('id', models.AutoField(verbose_name='ID', auto_created=True, primary_key=True, serialize=False)),
+                ('image', models.ImageField(null=True, upload_to='')),
                 ('image_url', models.CharField(default='', max_length=600)),
+                ('image_path', models.CharField(default='', max_length=600)),
                 ('name', models.CharField(max_length=50)),
                 ('description', models.TextField(null=True)),
                 ('reserved_price', models.DecimalField(max_digits=9, decimal_places=2)),
-                ('category', models.CharField(default='furniture', choices=[('furniture', 'Furniture'), ('electronics', 'Electronics'), ('jewelery', 'Jewelery'), ('music_instruments', 'Instruments'), ('tickets', 'Tickets')], max_length=50)),
+                ('category', models.CharField(default='furniture', max_length=50, choices=[('furniture', 'Furniture'), ('electronics', 'Electronics'), ('jewelery', 'Jewelery'), ('music_instruments', 'Instruments'), ('tickets', 'Tickets')])),
                 ('user', models.ForeignKey(to='base.HackeratiUser', related_name='item')),
             ],
         ),
         migrations.CreateModel(
             name='Purchase',
             fields=[
-                ('id', models.AutoField(primary_key=True, auto_created=True, verbose_name='ID', serialize=False)),
+                ('id', models.AutoField(verbose_name='ID', auto_created=True, primary_key=True, serialize=False)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('price', models.DecimalField(max_digits=9, decimal_places=2)),
                 ('auction', models.ForeignKey(to='auction.Auction', related_name='purchase')),

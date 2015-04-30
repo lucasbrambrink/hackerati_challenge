@@ -29,7 +29,7 @@ $(document).ready(function() {
         var counterId = "#auction-counter-" + auctionID;
 
         changeEachVisibility('.auction-container', 'hidden');
-        $('#chart-container').css('display', 'none').css('visibility', 'hidden');
+        $('.chart-container-div').css('display', 'none').css('visibility', 'hidden');
 
         $('.inventory-container').css('display', 'none');
         $('.counter-cell').each(function() {
@@ -53,15 +53,14 @@ $(document).ready(function() {
         var $highestBid = $('.highest-bid-' + auctionID);
         var highestBid = parseInt($highestBid.text().slice(1));
         var currentBalance = parseFloat($('#user-balance').text().slice(1));
-        console.log(currentBalance)
         if (bidAmount && !isNaN(bidAmount) && bidAmount > highestBid && bidAmount <= currentBalance) {
             AJAXcreateBid($highestBid, bidAmount, auctionID);
         }
-    })
+    });
 
     $('#view-inventory').on('click', function(){
         changeEachVisibility('.auction-container', 'hidden');
-        $('#chart-container').css('display', 'none').css('visibility', 'hidden');
+        $('.chart-container-div').css('display', 'none').css('visibility', 'hidden');
         $('.inventory-container').css('display', 'inline').css('visibility', 'visible');
     });
 
@@ -88,11 +87,12 @@ $(document).ready(function() {
         var itemID = $(this).data('item-id');
         var duration = $('#auction-duration').val();
         AJAXinitiateAuction(itemID, duration);
-    })
+    });
 
     $('#view-graph').on('click', function(){
         $('.inventory-container').css('display', 'none').css('visibility', 'hidden');
         $('.auction-container').css('display', 'none').css('visibility', 'hidden');
+        $('.chart-container-div').css('display', 'inline').css('visibility', 'visible');
         $('#chart-container').css('display', 'inline').css('visibility', 'visible');
         AJAXfetchGraphingData();
     })

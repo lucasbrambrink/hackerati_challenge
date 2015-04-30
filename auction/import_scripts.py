@@ -1,10 +1,109 @@
 __author__ = 'lb'
 from base.utils import FormatHelper as fh
+from django.conf import settings
 from bs4 import BeautifulSoup
-from .models import InventoryItem
+from .models import InventoryItem, Auction
+from base.models import HackeratiUser
+from time import sleep
+import os
 import requests
 import re
 import sys
+import csv
+import random
+
+## REDIS QUEUE CALL
+def sync_new_items_from_csv(user_id):
+    importer = ImportHandler(user_id)
+    importer.import_items_from_csv()
+    return True
+
+
+
+class ImportHandler(object):
+    """
+    Handles DB Import from
+    """
+    MAX_ITEMS = 10
+
+    def __init__(self, user_id=None):
+        self.user_id = int(user_id) if user_id and (type(user_id) is int or len(user_id)) else HackeratiUser.objects.first().id
+
+
+    def import_items_from_csv(self, number_of_items=None):
+        """
+        :param number_of_items: max number of items to be imported
+        :return: None, imports ``InventoryItem`` into DB for that user
+        """
+        if not number_of_items:
+            number_of_items = self.MAX_ITEMS
+
+        count_before = InventoryItem.objects.count()
+        fieldnames = ['image_path', 'name', 'price']
+        path = os.path.join(settings.MEDIA_ROOT, 'inventory_data.csv')
+        with open(path, mode='r') as inventory_data:
+            reader = csv.DictReader(inventory_data, fieldnames=fieldnames)
+            for index, line in enumerate(reader):
+                if index >= number_of_items:
+                    break
+
+                name = line['name']
+                if InventoryItem.objects.filter(name__icontains=name).count() > 0:
+                    # if this item is already in the data base, or one with a
+                    # similar enough posting title, skip it but make to increment our counter
+                    number_of_items += 1
+                    continue
+
+                item = InventoryItem(
+                    user_id=self.user_id,
+                    image_path=line['image_path'],
+                    name=name,
+                    reserved_price=line['price']
+                )
+                item.upload_image_from_path()
+                item.save()
+
+
+        created_num = InventoryItem.objects.count() - count_before
+        print('created', created_num, 'new Items')
+        return None
+
+
+    def master_init_all_items(self):
+        for item in InventoryItem.objects.all():
+            if not item.is_being_auctioned:
+                sleep(random.randint(15, 75))
+                if not item.is_sold:
+                    new_auction = Auction(
+                        user_id=self.user_id,
+                        hours_duration=random.randint(12, 24),
+                        item=item,
+                    )
+                    new_auction.save()
+
+    def initiate_auction_from_all_items(self, duration=1):
+        try:
+            duration = 1 if not len(duration) else int(duration)
+            for item in InventoryItem.objects.filter(user_id=self.user_id):
+                if not item.is_being_auctioned:
+                    new_auction = Auction(
+                        user_id=self.user_id,
+                        hours_duration=duration,
+                        item=item,
+                    )
+                    new_auction.save()
+            return True
+        except:
+            return False
+
+    def perform_sync_from_craigslist(self, query=None, max_new=10):
+        cl_sync = AutoPopulateThroughCraigslist(self.user_id, number_to_import=max_new)
+        try:
+            cl_sync.run_global_import(query=query)
+            return True
+        except:
+            return False
+
 
 
 
@@ -20,16 +119,16 @@ class AutoPopulateThroughCraigslist(object):
         (MAXPRICE, 'max'),
     )
 
-    def __init__(self, user_id=1, query='furniture', number_to_import=10, min_price='300', max_price='500'):
-        self.user_id = user_id
+    def __init__(self, user_id=None, query='furniture', number_to_import=10, min_price='300', max_price='500'):
+        self.user_id = user_id if user_id else HackeratiUser.objects.first().id
         self.query = query
         self.number_to_import = number_to_import
         self.min_price = min_price
         self.max_price = max_price
 
 
-    ###---< Global Scrape for Query >---###
-    def run_global_import(self, query='furniture'):
+    ###---< Global Scrape Craigslist & Import to DB directly >---###
+    def run_global_import(self, query='furniture', write_to_csv=True):
         """
         :param query: ``str`` to scrape results page for
         :return: ``bool`` indicating whether new objects were imported
@@ -58,6 +157,9 @@ class AutoPopulateThroughCraigslist(object):
             if new_inventory.upload_image_from_url():
                 new_inventory.save()
 
+        if write_to_csv:
+            self.write_to_csv()
+
         count_after = InventoryItem.objects.count()
         num_created = count_after - count_before
         print("Imported", num_created, "Objects")
@@ -67,6 +169,23 @@ class AutoPopulateThroughCraigslist(object):
 
 
     ###---< Helper Methods >---###
+    def write_to_csv(self):
+        """
+        Writes all InventoryItems to CSV file with image file specified
+        """
+        data = InventoryItem.objects.all()
+        fieldnames = ['image_path', 'name', 'price']
+        file_path = os.path.join(settings.PROJECT_DIR, 'base', 'static', settings.MEDIA_ROOT, 'inventory_data.csv')
+        with open(file_path, mode='w') as inventory:
+            writer = csv.DictWriter(inventory, fieldnames=fieldnames, delimiter=',')
+            for item in data:
+                writer.writerow({
+                    'image_path': item.image.path,
+                    'name': item.name,
+                    'price': item.reserved_price
+                })
+
+
     def fetch_craigslist_page(self, filters={}, query=None):
         """
         :param filters: ``dict`` for min, max prices
