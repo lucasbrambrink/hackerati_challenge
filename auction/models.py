@@ -93,18 +93,22 @@ class InventoryItem(models.Model):
                            int(round(original_size[1] / resize_factor)))
         return image.resize(compressed_size, Image.ANTIALIAS)
 
-
-    def fetch_PIL_object_from_url(self, url):
+    @staticmethod
+    def fetch_PIL_object_from_url(url):
         """
         :param url: ``str``
         :return: ``PIL instance``
         """
         # fetch image from url
         image_stream = requests.get(url)
-        # print (StringIO(image_stream.content))
         return Image.open(BytesIO(image_stream.content))
 
+
     def upload_image_from_path(self, path=None):
+        """
+        :param path: loads images from a root path
+        :return: None, mutates self
+        """
         if not path:
             path = self.image_path
 
@@ -120,11 +124,6 @@ class InventoryItem(models.Model):
             self.save()
 
 
-    @property
-    def image_file_name(self):
-        return 'images/' + self.image.path.split('/')[-1]
-
-
     @staticmethod
     def remove_same_name(name):
         """
@@ -137,11 +136,15 @@ class InventoryItem(models.Model):
                 os.remove(path)
 
     @staticmethod
-    def graphing_data():
+    def fetch_bins(obj):
+        """ puts data into bins of price ranges
+        :param obj: model to be analyzed
+        :return: ``list`` of ``int``s
+        """
         data_bins = {
             0: [], 1: [], 2: [], 3: [], 4: [], 5: []
         }
-        for item in InventoryItem.objects.all():
+        for item in obj.objects.all():
             price = item.reserved_price
             bin_key = int(math.floor(price / 100))
             bin_key = 5 if bin_key > 5 else bin_key
@@ -151,15 +154,28 @@ class InventoryItem(models.Model):
             formatted_bins.append(len(value))
         return formatted_bins
 
-#
-# @receiver(post_delete, sender=InventoryItem)
-# def auto_delete_file_on_delete(sender, instance, *args, **kwargs):
-#     """auto-delete image jps from filesystem
-#     upon deleting the `InventoryItem` instance"""
-#     if instance.image:
-#         if os.path.isfile(instance.image.path):
-#             os.remove(instance.image.path)
-#
+    @staticmethod
+    def graphing_data():
+        return InventoryItem.fetch_bins(InventoryItem)
+
+
+
+@receiver(pre_save, sender=InventoryItem)
+def set_category(sender, instance, *args, **kwargs):
+    for category in InventoryItem.CATEGORY_CHOICES:
+        # very broad test
+        if category[0].lower() in instance.name.lower():
+            instance.category = category
+
+
+@receiver(post_delete, sender=InventoryItem)
+def auto_delete_file_on_delete(sender, instance, *args, **kwargs):
+    """auto-delete image jps from filesystem
+    upon deleting the `InventoryItem` instance"""
+    if instance.image:
+        if os.path.isfile(instance.image.path):
+            os.remove(instance.image.path)
+
 
 
 
@@ -216,10 +232,12 @@ class Auction(models.Model):
     def is_active(self):
         return self.ending_datetime > datetime.datetime.now(datetime.timezone.utc)
 
+
     @property
     def number_of_seconds_left(self):
         delta = self.ending_datetime - datetime.datetime.now(datetime.timezone.utc)
         return delta.total_seconds()
+
 
     ###---< Internal Methods >---###
     def increase_current_bidding_price(self, value=None):
@@ -239,6 +257,11 @@ class Auction(models.Model):
         pass
 
     def on_finish(self):
+        """ when auction is signaled to have run out of time
+
+            if successful, create purchase item
+        :return:
+        """
         all_bids = self.bids.order_by('-price')
         highest_bid = all_bids[0] if len(all_bids) else 0
 
@@ -256,30 +279,22 @@ class Auction(models.Model):
         new_purchase.save()
         return True
 
+
     @staticmethod
     def graphing_data():
-        data_bins = {
-            0: [], 1: [], 2: [], 3: [], 4: [], 5: []
-        }
-        for auction in Auction.objects.all():
-            price = auction.current_highest_bid
-            bin_key = int(math.floor(price / 100))
-            bin_key = 5 if bin_key > 5 else bin_key
-            data_bins[bin_key].append(price)
-
-        formatted_bins = []
-        for key, value in data_bins.items():
-            formatted_bins.append(len(value))
-        return formatted_bins
+        """
+        :return: use static method from Inventory Item
+        """
+        return InventoryItem.fetch_bins(Auction)
 
 
 
 @receiver(pre_save, sender=Auction)
 def execute_pre_save(sender, instance, *args, **kwargs):
     if not instance.id:
+        # on init, calculate the starting price
         instance.starting_price = instance._starting_price
     instance.current_price = instance.current_highest_bid.price if instance.bids.count() > 0 else 0
-
 
 
 

@@ -356,8 +356,35 @@ var PageTransitions = (function () {
             endNextPage = false;
 
         gotoPage = parseInt($pageTrigger.data('goto'));
-        console.log(gotoPage)
-        console.log($pages)
+        if (gotoPage == '-1' && currentPageIndex == 0){
+
+            var username = $('#username').val();
+            AJAXtestUserCredentials(username, null);
+
+        } else if (gotoPage == '-1' && currentPageIndex == 1){
+
+
+
+            var $password = $('#password');
+            console.log($password.hasClass('validated'))
+            if ($password.hasClass('validate')){
+                var username = $('#username').val();
+                var password = $password.val();
+                AJAXtestUserCredentials(username, password);
+            }
+        } else if (gotoPage == '-1' && currentPageIndex == 2){
+            var $password = $('#password');
+            console.log($password.hasClass('validated'))
+            console.log($password.hasClass('invalid'))
+            if ($password.hasClass('validated')){
+                currentPageIndex++;
+                $('.pt-page-4').find('question').html('Welcome Back!')
+            } else if ($password.hasClass('invalid')){
+                currentPageIndex--;
+                $('pt-page-2').find('question').html('Invalid password, try again.')
+            }
+
+        }
 
         // check if 'data-goto' value is greater than total pages inside 'pt-wrapper'
         if (!(pagesCount < gotoPage)) {
@@ -512,7 +539,7 @@ var PageTransitions = (function () {
     }
 
     function digestForm() {
-        var attributes = ['name', 'username', 'password'];
+        var attributes = ['username', 'password', 'name'];
 
         var data = {};
         var index = 0;
@@ -529,7 +556,7 @@ var PageTransitions = (function () {
 
         $.ajax({
             type: 'POST',
-            url: '/on-boarding/create/new/user/',
+            url: '/on-boarding/user/new/',
             data: {
                 csrfmiddlewaretoken: csrf_token,
                 data: JSON.stringify(data)

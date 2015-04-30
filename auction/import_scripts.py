@@ -137,12 +137,17 @@ class AutoPopulateThroughCraigslist(object):
 
 
     ###---< Global Scrape Craigslist & Import to DB directly >---###
-    def run_global_import(self, query='furniture', write_to_csv=True):
+    def run_global_import(self, query='furniture', hyperlink=None, write_to_csv=True):
         """
         :param query: ``str`` to scrape results page for
         :return: ``bool`` indicating whether new objects were imported
         """
-        soup = self.fetch_craigslist_page(filters={'min': self.min_price}, query=query)
+        if hyperlink:
+            craiglist_page = requests.get(hyperlink)
+            soup = BeautifulSoup(craiglist_page.content)
+        else:
+            soup = self.fetch_craigslist_page(filters={'min': self.min_price}, query=query)
+
         new_inventory_data = self.visit_each_posting(soup, num=self.number_to_import)
         if not len(new_inventory_data):
             return False
@@ -180,6 +185,10 @@ class AutoPopulateThroughCraigslist(object):
 
         return True if num_created > 0 else False
 
+
+    # this is mostly a wrapper for easier use
+    def import_from_specific_page(self, page):
+        return self.run_global_import(query=None, hyperlink=page)
 
 
     ###---< Helper Methods >---###

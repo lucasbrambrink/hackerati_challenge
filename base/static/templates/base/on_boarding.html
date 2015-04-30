@@ -10,10 +10,10 @@
 {% block body %}
 <div class="pt-wrapper">
     <div class="pt-trigger-container">
-        <div class="pt-trigger" style="opacity: 0; visibility: hidden;" data-animation="4" data-goto="-2">
+        <div class="pt-trigger trigger-prev" style="opacity: 0; visibility: hidden;" data-animation="4" data-goto="-2">
             <div class="btn btn-default">PREV</div>
         </div>
-        <div class="pt-trigger" data-animation="3" data-goto="-1">
+        <div class="pt-trigger trigger-next" data-animation="3" data-goto="-1">
             <div class="btn btn-default">NEXT</div>
         </div>
     </div>
@@ -21,20 +21,20 @@
     {#  ON BOARDING QUESTIONAIRE  #}
     <div class="pt-page pt-page-1">
         <div class='page-content'>
-            <label class="question">What is your name?</label>
-            <input type="text" class='form-control' id='name-form' placeholder="Full Name" name="name">
+            <label class="question">Provide a username!</label>
+            <input type="text" class='form-control' id='username' placeholder="Username" name="username">
         </div>
     </div>
     <div class="pt-page pt-page-2">
         <div class='page-content'>
-            <label class="question">Select a username!</label>
-            <input type="text" class='form-control' placeholder="Username" name="username">
+            <label class="question">Choose a password!</label>
+            <input type="password" class='form-control' id='password' placeholder="Password" name=password">
         </div>
     </div>
     <div class="pt-page pt-page-3">
         <div class='page-content'>
-            <label class="question">Choose a password!</label>
-            <input type="password" class='form-control' placeholder="Password" name=password">
+            <label class="question">and maybe your name?</label>
+            <input type="text" class='form-control' id='name-form' placeholder="Full Name" name="name">
         </div>
     </div>
     <div class="pt-page pt-page-4">
@@ -75,4 +75,6 @@
 
 {% block scripts %}
     <script type="text/javascript" src="{% static 'base/transition.js/js/transitions_on_boarding.js' %}"></script>
+    <script type="text/javascript" src="{% static 'auction/js/ajax.js' %}"></script>
+
 {% endblock %}

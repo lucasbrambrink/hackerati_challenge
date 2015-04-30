@@ -31,7 +31,7 @@ class AuctionTemplateView(TemplateView):
             user = HackeratiUser(
                 name=name,
                 username=fh.name_to_username(name),
-                password="".join(self.faker.words())
+                password="".join(faker.words())
             )
             user.save()
 
