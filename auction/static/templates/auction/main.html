@@ -94,14 +94,14 @@
                         <!--<h3>-->
                             <!--${{ item.reserved_price }}-->
                         <!--</h3>-->
-                        <div class='item-image' style="background-image: url('{{ MEDIA_URL }}{{ item.image_file_name }}')"></div>
+                        <div class='item-image' style="background-image: url({{ MEDIA_URL }}{{ item.image_file_name }})"></div>
                     </div>
                 {% endfor %}
             {% endif %}
         </div>
         {% for auction in auctions %}
             <div class="auction-container" id="auction-{{ auction.id }}" data-seconds-left="{{ auction.seconds_until_expire }}">
-                <div class="auction" style="background-image: url({% static 'images/{{ auction.item.image_file_name }}' %})"></div>
+                <div class="auction" style="background-image: url({{ MEDIA_URL }}{{ auction.item.image_file_name }})"></div>
                 <div class="auction-info">
                     <table class="table">
                         <tbody>
@@ -162,7 +162,7 @@
         {% for auction in auctions %}
             <div class="auction-item" id='auction-thumb-{{ auction.id }}'>
                 <h3>{{ auction.item.shortened_name }} : ${{ auction.item.reserved_price }}</h3>
-                <div class='item-image' style="background-image: url({% static 'images/{{ auction.item.image_file_name }}' %})"></div>
+                <div class='item-image' style="background-image: url({{ MEDIA_URL }}{{ auction.item.image_file_name }})"></div>
             </div>
         {% endfor %}
     </div>
