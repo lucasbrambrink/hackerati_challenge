@@ -56,7 +56,7 @@ class ImportHandler(object):
 
                 item = InventoryItem(
                     user_id=self.user_id,
-                    image_path=line['image_path_local'] if not settings.DEBUG else line['image_path_production'],
+                    image_path=line['image_path_local'] if settings.DEBUG else line['image_path_production'],
                     name=name,
                     reserved_price=line['price']
                 )
