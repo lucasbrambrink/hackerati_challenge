@@ -24,16 +24,9 @@ DATABASES = {
     'default': dj_database_url.config()
 }
 
-# BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-STATIC_ROOT = 'staticfiles'
-STATIC_URL = '/static/'
-
-STATICFILES_DIRS = (
-    os.path.join(PROJECT_DIR, 'base', 'static'),
-)
 # Absolute filesystem path to the top-level project folder:
 SITE_ROOT = dirname(PROJECT_DIR)
-STATIC_ROOT = os.path.join(PROJECT_DIR, 'base', 'root')
+# STATIC_ROOT = os.path.join(PROJECT_DIR, 'base', 'root')
 
 # Site name:
 SITE_NAME = basename(PROJECT_DIR)

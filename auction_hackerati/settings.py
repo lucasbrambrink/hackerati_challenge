@@ -83,7 +83,6 @@ TEMPLATE_DIRS = (
 
 
 
-
 ###---< Import Local Settings >---###
 if DEBUG:
     try:
