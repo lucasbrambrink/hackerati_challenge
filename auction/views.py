@@ -34,6 +34,7 @@ class AuctionTemplateView(TemplateView):
                 password="".join(self.faker.words())
             )
             user.save()
+        
 
         # cannot filter by properties
         active_auction = [auction for auction in Auction.objects.all() if auction.is_active]
