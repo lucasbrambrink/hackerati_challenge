@@ -162,6 +162,8 @@ class InventoryItem(models.Model):
 
 @receiver(pre_save, sender=InventoryItem)
 def set_category(sender, instance, *args, **kwargs):
+    """ Assigns a category if possible, defaults to furniture
+    """
     for category in InventoryItem.CATEGORY_CHOICES:
         # very broad test
         if category[0].lower() in instance.name.lower():
@@ -170,7 +172,7 @@ def set_category(sender, instance, *args, **kwargs):
 
 @receiver(post_delete, sender=InventoryItem)
 def auto_delete_file_on_delete(sender, instance, *args, **kwargs):
-    """auto-delete image jps from filesystem
+    """auto-delete image jpgs from filesystem
     upon deleting the `InventoryItem` instance"""
     if instance.image:
         if os.path.isfile(instance.image.path):
@@ -241,6 +243,11 @@ class Auction(models.Model):
 
     ###---< Internal Methods >---###
     def increase_current_bidding_price(self, value=None):
+        """ Increase the current bidding price on the DB level. These matters are best handled
+            as classmethods
+        :param value: ``decimal`` indicated new price
+        :return: ``bool`` if acceptable new price
+        """
         if value <= self.current_price:
             return False
 
@@ -257,8 +264,7 @@ class Auction(models.Model):
         pass
 
     def on_finish(self):
-        """ when auction is signaled to have run out of time
-
+        """ when auction is signaled to have run out of time, close it.
             if successful, create purchase item
         :return:
         """
@@ -291,6 +297,9 @@ class Auction(models.Model):
 
 @receiver(pre_save, sender=Auction)
 def execute_pre_save(sender, instance, *args, **kwargs):
+    """ on init, calculate the starting price,
+        and update the highest bid as the current price for the DB
+    """
     if not instance.id:
         # on init, calculate the starting price
         instance.starting_price = instance._starting_price

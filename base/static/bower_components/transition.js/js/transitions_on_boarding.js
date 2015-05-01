@@ -374,8 +374,7 @@ var PageTransitions = (function () {
             }
         } else if (gotoPage == '-1' && currentPageIndex == 2){
             var $password = $('#password');
-            console.log($password.hasClass('validated'))
-            console.log($password.hasClass('invalid'))
+
             if ($password.hasClass('validated')){
                 currentPageIndex++;
                 $('.pt-page-4').find('question').html('Welcome Back!')
@@ -493,9 +492,6 @@ var PageTransitions = (function () {
             var pageNum = this.className.split(' ')[1].split('-')[2];
             var isCurrent = parseInt(pageNum) === currentPageIndex + 1;
 
-            console.log(pageNum);
-            console.log(isCurrent);
-            console.log(currentPageIndex)
             if (isCurrent){
                 var isFirstPage = pageNum === "1",
                     isLastPage = pageNum === "5";

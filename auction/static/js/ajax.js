@@ -1,21 +1,23 @@
 /**
  * Created by lb on 4/29/15.
  */
-
+function getCSRF(){
+    var csrf_token = $.cookie('csrftoken');
+    if (!csrf_token || csrf_token.length == 0){
+        csrf_token = $('#csrf-token').text();
+    }
+    return csrf_token;
+}
 
 function AJAXsignalEnd(auctionID) {
 
     var data = {'auction_id': auctionID };
 
-    var csrf_token = $.cookie('csrftoken');
-    if (!csrf_token || csrf_token.length == 0){
-        csrf_token = $('#csrf-token').text();
-    }
     $.ajax({
         type: 'POST',
         url: '/auction/auction/ending/',
         data: {
-            csrfmiddlewaretoken: csrf_token,
+            csrfmiddlewaretoken: getCSRF(),
             data: JSON.stringify(data)
         },
         success: function (data) {
@@ -33,16 +35,13 @@ function AJAXsignalEnd(auctionID) {
 function AJAXimportItemsFromCraigslist(import_type, query) {
 
     var data = {'import_type': import_type, 'query': query};
-    var csrf_token = $.cookie('csrftoken');
-    if (!csrf_token || csrf_token.length == 0){
-        csrf_token = $('#csrf-token').text();
-    }
+
     $('.loading-div').css('visibility', 'visible');
     $.ajax({
         type: 'POST',
         url: '/auction/item/import/',
         data: {
-            csrfmiddlewaretoken: csrf_token,
+            csrfmiddlewaretoken: getCSRF(),
             data: JSON.stringify(data)
         },
         success: function (data) {
@@ -60,15 +59,12 @@ function AJAXimportItemsFromCraigslist(import_type, query) {
 function AJAXcreateNewAuction(type, duration) {
 
     var data = {'type': type, 'duration': duration};
-    var csrf_token = $.cookie('csrftoken');
-    if (!csrf_token || csrf_token.length == 0){
-        csrf_token = $('#csrf-token').text();
-    }
+
     $.ajax({
         type: 'POST',
         url: '/auction/auction/create/',
         data: {
-            csrfmiddlewaretoken: csrf_token,
+            csrfmiddlewaretoken: getCSRF(),
             data: JSON.stringify(data)
         },
         success:     function (data) {
@@ -85,15 +81,12 @@ function AJAXcreateNewAuction(type, duration) {
 
 function AJAXcreateBid($highestBid, bidAmount, auctionID) {
     var data = { 'amount': bidAmount, 'id': auctionID };
-    var csrf_token = $.cookie('csrftoken');
-    if (!csrf_token || csrf_token.length == 0){
-        csrf_token = $('#csrf-token').text();
-    }
+
     $.ajax({
         type: 'POST',
         url: '/auction/bid/create/',
         data: {
-            csrfmiddlewaretoken: csrf_token,
+            csrfmiddlewaretoken: getCSRF(),
             data: JSON.stringify(data)
         },
         success: function (data) {
@@ -118,16 +111,12 @@ function AJAXcreateBid($highestBid, bidAmount, auctionID) {
 function AJAXremoveItem(itemID) {
 
     var data = {'item_id': itemID};
-    var csrf_token = $.cookie('csrftoken');
-    if (!csrf_token || csrf_token.length == 0){
-        csrf_token = $('#csrf-token').text();
-    }
-    console.log(data)
+
     $.ajax({
         type: 'POST',
         url: '/auction/item/delete/',
         data: {
-            csrfmiddlewaretoken: csrf_token,
+            csrfmiddlewaretoken: getCSRF(),
             data: JSON.stringify(data)
         },
         success: function (data) {
@@ -144,16 +133,12 @@ function AJAXremoveItem(itemID) {
 
 function AJAXinitiateAuction(itemID, duration) {
     var data = {'item_id': itemID, 'duration': duration};
-    console.log(data)
-    var csrf_token = $.cookie('csrftoken');
-    if (!csrf_token || csrf_token.length == 0){
-        csrf_token = $('#csrf-token').text();
-    }
+
     $.ajax({
         type: 'POST',
         url: '/auction/item/init/',
         data: {
-            csrfmiddlewaretoken: csrf_token,
+            csrfmiddlewaretoken: getCSRF(),
             data: JSON.stringify(data)
         },
         success: function (data) {
@@ -185,17 +170,11 @@ function AJAXfetchGraphingData(itemID, duration) {
 
 function AJAXtestUserCredentials(username, password) {
     var data = { 'username': username, 'password': password };
-    console.log(data);
 
-    var csrf_token = $.cookie('csrftoken');
-    if (!csrf_token || csrf_token.length == 0){
-        csrf_token = $('#csrf-token').text();
-    }
-    console.log(csrf_token)
     $.ajax({
         type: 'POST',
         data: {
-            csrfmiddlewaretoken: csrf_token,
+            csrfmiddlewaretoken: getCSRF(),
             data: JSON.stringify(data)
         },
         url: '/on-boarding/user/info/',
@@ -237,16 +216,11 @@ function AJAXcreateNewItemManually() {
         data[type] = $this.val();
     });
 
-    var csrf_token = $.cookie('csrftoken');
-    if (!csrf_token || csrf_token.length == 0){
-        csrf_token = $('#csrf-token').text();
-    }
-
     $.ajax({
         type: 'POST',
         url: '/auction/item/new/',
         data: {
-            csrfmiddlewaretoken: csrf_token,
+            csrfmiddlewaretoken: getCSRF(),
             data: JSON.stringify(data)
         },
         success: function (data) {
