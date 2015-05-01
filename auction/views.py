@@ -22,6 +22,7 @@ class AuctionTemplateView(TemplateView):
 
     def get(self, request, *args, **kwargs):
         user_id = request.session.get('id')
+        user = None
         if user_id:
             user = HackeratiUser.objects.get(id=int(user_id))
 

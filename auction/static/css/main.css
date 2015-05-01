@@ -1,5 +1,5 @@
 body {
-  background: #f9e4b6;
+  background: #e4f8ff;
 }
 .container {
   font-family: 'Lato', sans-serif;
@@ -21,6 +21,7 @@ body {
   overflow: scroll;
   margin-left: 0;
   margin-right: 0;
+  border-bottom: 1px solid black;
 }
 .container .auction-focus #chart-container {
   height: 560px;
@@ -156,6 +157,8 @@ body {
   overflow: auto;
   padding: 0;
   text-align: center;
+  border-right: 1px solid black;
+  border-bottom: 1px solid black;
 }
 .container .ongoing-auctions .filter {
   height: 60px;
@@ -184,6 +187,7 @@ body {
 .container .control-panel {
   height: 100%;
   border-left: 1px solid;
+  border-bottom: 1px solid black;
 }
 .container .control-panel .action-container {
   margin-left: 1em;
