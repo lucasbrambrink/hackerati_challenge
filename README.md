@@ -46,7 +46,9 @@ the value to increase, as users are given more chances to bid ever higher).
 The motivation of this project was to integrate an auction-system with craigslist. The end result was rather
 cumbersome, since craigslist does not provide an API. Moreover, the production environment is severely
 hampered by the fact that craigslist.org blocks all Heroku IP addresses. So to my dismay, the deployed
-project is unable to scrape new postings from craigslist.
+project is unable to scrape new postings from craigslist. However, because this process can take several seconds,
+I decided to 'unhinge' it from the web-layer as a separate process. I used a Redis queue to delegate
+these asynchronous worker tasks. That is the fun stuff :)
 
 As an additional note, a very important component of the craigslist market is the seller's location.
 I chose to ignore this aspect for the MVP, but later iterations would certainly make use of it.
@@ -72,7 +74,7 @@ After all, I am applying for a Backend position! However, along with the grand r
 
 #### Views
 I forewent using django's REST framework in the interest of quick implementation (another mistake), and without
-Backbone's MVVM pattern, I had to get a little creative with handling requests on the server side. Therefore,
+Backbone's MVVM pattern, I had to get a little creative with handling requests on the server. Therefore,
 the url itself defines an 'action' that determines server-side event delegation. It was never meant to take on the
 scale that it did, but it was fun to build this little mini-architecture.
 
@@ -83,7 +85,7 @@ When working in a team on a mighty project, I firmly believe writing unit & inte
 sustainability and continuous integration of the project.
 
 #### CSS
-I used to LESS (which I much prefer) and compiled to css. I am rather unskilled at proper front-end design,
+I used to LESS (which I much prefer) and compiled to CSS. I am rather unskilled at proper front-end design,
 as it is not my strong suit, so please bear with this very shabby looking MVP :)
 
 
