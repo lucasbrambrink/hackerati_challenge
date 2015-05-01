@@ -207,6 +207,19 @@ class ItemView(View):
                 )
                 new_auction.save()
 
+        elif action == 'new':
+            url = post['url']
+            title = post['title']
+            price = post['price']
+
+            new_item = InventoryItem(
+                user_id=user.id,
+                image_path=url,
+                name=title,
+                reserved_price=price,
+            )
+            new_item.save()
+
         elif action == 'import':
             auction_initiator = ImportHandler(user_id=user.id)
             import_type = post['import_type']

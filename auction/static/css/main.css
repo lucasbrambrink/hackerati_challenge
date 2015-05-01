@@ -98,11 +98,18 @@ body {
 }
 .container .auction-focus .inventory-container .header table tr td:nth-child(1) {
   text-align: right;
-  width: 35%;
+  width: 25%;
   border-right: 1px solid black;
 }
 .container .auction-focus .inventory-container .header table tr td:nth-child(2) {
   text-align: left;
+  width: 55%;
+}
+.container .auction-focus .inventory-container .header table .new-division td:nth-child(2) {
+  border-top: 1px solid black;
+}
+.container .auction-focus .inventory-container .header table .inventory-create td:nth-child(2) {
+  padding: 0;
 }
 .container .auction-focus .inventory-container .inventory-item {
   margin-top: 8px;

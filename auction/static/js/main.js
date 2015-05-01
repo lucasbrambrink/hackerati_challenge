@@ -89,6 +89,21 @@ $(document).ready(function() {
         AJAXinitiateAuction(itemID, duration);
     });
 
+    $('.create-new-item').on('click', function(){
+        var valid = true;
+        $('.create-new-item-form').each(function(){
+            var $this = $(this),
+                value = $this.val(),
+                name = $this.attr('name');
+            if ((value.length == 0) || (name == 'price' && isNaN(value))){
+                valid = false;
+            }
+        });
+        if (valid){
+            AJAXcreateNewItemManually();
+        }
+    });
+
     $('#view-graph').on('click', function(){
         $('.inventory-container').css('display', 'none').css('visibility', 'hidden');
         $('.auction-container').css('display', 'none').css('visibility', 'hidden');

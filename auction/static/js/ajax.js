@@ -227,3 +227,35 @@ function AJAXtestUserCredentials(username, password) {
         }
     });
 }
+
+function AJAXcreateNewItemManually() {
+    var data = {};
+    $('.create-new-item-form').each(function(){
+        var $this = $(this);
+        var type = $this.attr('name');
+        data[type] = $this.val();
+    });
+
+    var csrf_token = $.cookie('csrftoken');
+    if (!csrf_token || csrf_token.length == 0){
+        csrf_token = $('#csrf-token').text();
+    }
+
+    $.ajax({
+        type: 'POST',
+        url: '/auction/item/new/',
+        data: {
+            csrfmiddlewaretoken: csrf_token,
+            data: JSON.stringify(data)
+        },
+        success: function (data) {
+            location.reload();
+        },
+        error: function (xhr, errmsg, err) {
+            alert("error");
+        }
+    });
+
+
+
+}

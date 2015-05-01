@@ -12,6 +12,7 @@ body {
     #chart-container { height: 560px; width: 560px; display: none; }
     .chart-container-div { display: none; visibility: hidden; }
 
+
     .auction-container { position: absolute; visibility: hidden; width: 560px;
       .auction { height: 300px; width: 300px; margin-left: auto; margin-right: auto; margin-top: 3em; background-repeat: no-repeat; background-size: cover; }
       .auction-info {
@@ -55,8 +56,16 @@ body {
         table { font-size: 90%;
           tr, td, th { border: none; }
           tr {
-            td:nth-child(1) { text-align: right; width: 35%; border-right: 1px solid black; }
-            td:nth-child(2) { text-align: left; }
+            td:nth-child(1) { text-align: right; width: 25%; border-right: 1px solid black; }
+            td:nth-child(2) { text-align: left; width: 55%; }
+          }
+          .new-division {
+            td:nth-child(2) { border-top: 1px solid black }
+          }
+          .inventory-create {
+            td:nth-child(2) {
+              padding: 0;
+            }
           }
         }
       }

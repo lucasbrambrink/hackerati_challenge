@@ -36,11 +36,12 @@
 
     <div class="auction-focus col-md-6">
         <div class="chart-container-div">
+            <h2>Global Price Data</h2>
             <canvas id="chart-container"></canvas>
             <br>
             <div id="chart-legend">
                 <p>Auctions: Red, showing highest Bids</p>
-                <p>Inventory: Purple</p>
+                <p>Inventories: Purple</p>
             </div>
         </div>
 
@@ -52,14 +53,37 @@
                         <tr>
                             <td><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></td>
                             <td>Indicates the Item is being auctioned</td>
+                            <td>&nbsp;</td>
                         </tr>
                         <tr>
                             <td><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></td>
                             <td>Offers the Item up for auction</td>
+                            <td>&nbsp;</td>
                         </tr>
                         <tr>
                             <td><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></td>
                             <td>Removes the Item from Inventory & Auction</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr class="new-division inventory-create">
+                            <td><span class="glyphicon glyphicon-circle-arrow-down" aria-hidden="true"></span></td>
+                            <td><input class='form-control create-new-item-form' placeholder="image URL..." name='url' type="text"></td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr class="inventory-create">
+                            <td><span class="glyphicon glyphicon-music" aria-hidden="true"></span></td>
+                            <td><input class='form-control create-new-item-form' placeholder="choose a cool Title..." name='title' type="text"></td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr class="inventory-create">
+                            <td><span class="glyphicon glyphicon-usd" aria-hidden="true"></span></td>
+                            <td><input class='form-control create-new-item-form' placeholder="set a Price..." name='price' type="text"></td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr class="inventory-create">
+                            <td>&nbsp;</td>
+                            <td><div class="btn btn-success create-new-item">Create New Item</div></td>
+                            <td>&nbsp;</td>
                         </tr>
                     </tbody>
                 </table>
