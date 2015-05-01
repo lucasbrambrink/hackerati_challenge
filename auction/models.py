@@ -145,7 +145,7 @@ class InventoryItem(models.Model):
             0: [], 1: [], 2: [], 3: [], 4: [], 5: []
         }
         for item in obj.objects.all():
-            price = item.reserved_price
+            price = item.reserved_price if item.__class__.__name__ == 'InventoryItem' else item.current_highest_bid
             bin_key = int(math.floor(price / 100))
             bin_key = 5 if bin_key > 5 else bin_key
             data_bins[bin_key].append(price)
