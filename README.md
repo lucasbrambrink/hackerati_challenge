@@ -88,6 +88,10 @@ sustainability and continuous integration of the project.
 I used to LESS (which I much prefer) and compiled to CSS. I am rather unskilled at proper front-end design,
 as it is not my strong suit, so please bear with this very shabby looking MVP :)
 
+#### Chart
+I love data. Hence, I wanted at least one graph on the site. I decided to simply serve some global price data,
+showing the number of individual prices within all user's inventories, as well as all active & archived auctions.
+More time would have lead to more charts!
 
 # Deployment
 Deployed live at http://hackerati-auction-challenge.herokuapp.com
